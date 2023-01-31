@@ -1,2 +1,1 @@
 require("koala")
-print("hello")
