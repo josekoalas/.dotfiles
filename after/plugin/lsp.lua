@@ -1,5 +1,6 @@
 local lsp = require('lsp-zero')
 local cmp = require('cmp')
+local cmp_ap = require('nvim-autopairs.completion.cmp')
 
 -- LSP zero recommended settings
 lsp.preset('recommended')
@@ -41,7 +42,6 @@ lsp.on_attach(function(client, bufnr)
 end)
 
 -- Setup cmp sources
-
 local has_words_before = function()
     if vim.api.nvim_buf_get_option(0, "buftype") == "prompt" then return false end
     local line, col = unpack(vim.api.nvim_win_get_cursor(0))
@@ -69,7 +69,18 @@ lsp.setup_nvim_cmp({
                 fallback()
             end
         end),
-    }), 
+    }),
 })
 
+-- Add autopairs to cmp
+cmp.event:on('confirm_done', cmp_ap.on_confirm_done())
+
+-- LSP zero setup
 lsp.setup()
+
+-- Diagnostic override settings
+vim.diagnostic.config {
+    virtual_text = true,
+    update_in_insert = true,
+    float = { focusable = true },
+}

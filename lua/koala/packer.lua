@@ -31,6 +31,16 @@ require('packer').startup(function(use)
 		end
 	}
 
+    -- Icons
+    use {
+        'nvim-tree/nvim-web-devicons',
+        config = function()
+            require('nvim-web-devicons').setup({
+                color_icons = true,
+            })
+        end
+    }
+
 	--------------
 	-- Features --
 	--------------
@@ -120,9 +130,47 @@ require('packer').startup(function(use)
         end
     }
 
+    -- Comments
+    use {
+        'numtostr/comment.nvim',
+        config = function()
+            require('comment').setup()
+        end
+    }
+
+    -- Autoclose pairs
+    use {
+        'windwp/nvim-autopairs',
+        config = function()
+            require('nvim-autopairs').setup()
+        end
+    }
+
+    -- File explorer
+    use {
+        'nvim-tree/nvim-tree.lua',
+        requires = {
+            'nvim-tree/nvim-web-devicons',
+        },
+        tag = 'nightly',
+        config = function ()
+            require('nvim-tree').setup()
+        end
+    }
+
 	----------
 	-- Misc --
 	----------
+
+    -- Keymaps
+    use {
+        'folke/which-key.nvim',
+        config = function()
+            vim.o.timeout = true
+            vim.o.timeoutlen = 500
+            require('which-key').setup()
+        end
+    }
 
 	-- Vim Games
 	use 'theprimeagen/vim-be-good'
