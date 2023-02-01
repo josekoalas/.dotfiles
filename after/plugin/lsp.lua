@@ -1,6 +1,5 @@
 local lsp = require('lsp-zero')
 local cmp = require('cmp')
-local cmp_ap = require('nvim-autopairs.completion.cmp')
 
 -- LSP zero recommended settings
 lsp.preset('recommended')
@@ -29,7 +28,7 @@ lsp.set_preferences({
 })
 
 -- New keybindings
-lsp.on_attach(function(client, bufnr)
+lsp.on_attach(function(_, bufnr)
 	vim.keymap.set("n", "<leader>gd", function() vim.lsp.buf.definition() end, { buffer = bufnr, remap = false, desc = '[G]et [D]efinition' })
 	vim.keymap.set("n", "<leader>h", function() vim.lsp.buf.hover() end, { buffer = bufnr, remap = false, desc = '[H]over' })
 	vim.keymap.set("n", "<leader>vws", function() vim.lsp.buf.workspace_symbol() end, { buffer = bufnr, remap = false, desc = '[V]iew [W]ork [S]pace' })
@@ -71,9 +70,6 @@ lsp.setup_nvim_cmp({
         end),
     }),
 })
-
--- Add autopairs to cmp
-cmp.event:on('confirm_done', cmp_ap.on_confirm_done())
 
 -- LSP zero setup
 lsp.setup()

@@ -138,24 +138,19 @@ require('packer').startup(function(use)
         end
     }
 
-    -- Autoclose pairs
+    -- Autoclose tags
     use {
-        'windwp/nvim-autopairs',
+        'm4xshen/autoclose.nvim',
         config = function()
-            require('nvim-autopairs').setup()
+            require('autoclose').setup{}
         end
     }
 
     -- File explorer
     use {
         'nvim-tree/nvim-tree.lua',
-        requires = {
-            'nvim-tree/nvim-web-devicons',
-        },
+        requires = { 'nvim-tree/nvim-web-devicons' },
         tag = 'nightly',
-        config = function ()
-            require('nvim-tree').setup()
-        end
     }
 
 	----------
