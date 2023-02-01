@@ -41,6 +41,13 @@ require('packer').startup(function(use)
         end
     }
 
+    -- Lualine
+    use {
+        'hoob3rt/lualine.nvim',
+        requires = { 'kyazdani42/nvim-web-devicons', opt = true }
+    }
+
+
 	--------------
 	-- Features --
 	--------------
@@ -84,6 +91,19 @@ require('packer').startup(function(use)
 			{'rafamadriz/friendly-snippets'}, -- Provides snippets
 		}
 	}
+
+    -- DAP (debugger)
+    use {
+        'mfussenegger/nvim-dap',
+        requires = {
+            'thehamsta/nvim-dap-virtual-text', -- Adds virual text
+            'rcarriga/nvim-dap-ui', -- UI for debugging
+            'nvim-telescope/telescope-dap.nvim', -- Telescope functions for DAPs
+            'weissle/persistent-breakpoints.nvim', -- Save breakpoints automatically
+            'mfussenegger/nvim-dap-python', -- DAP for python
+        }
+    }
+    use "jay-babu/mason-nvim-dap.nvim"
 
 	-- Navigate using Ctrl+HJKL, compatible with tmux
 	use 'christoomey/vim-tmux-navigator'

@@ -35,3 +35,6 @@ vim.g.loaded_netrwPlugin = 1
 
 -- Set termgui colors
 vim.o.termguicolors = true
+
+-- Python 3
+vim.g.python3_host_prog = '/usr/local/bin/python3.11'

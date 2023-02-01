@@ -1,5 +1,6 @@
 local lsp = require('lsp-zero')
 local cmp = require('cmp')
+local mason_dap = require('mason-nvim-dap')
 
 -- LSP zero recommended settings
 lsp.preset('recommended')
@@ -73,6 +74,10 @@ lsp.setup_nvim_cmp({
 
 -- LSP zero setup
 lsp.setup()
+
+-- Load mason DAP support
+mason_dap.setup{ automatic_setup = true }
+mason_dap.setup_handlers()
 
 -- Diagnostic override settings
 vim.diagnostic.config {
