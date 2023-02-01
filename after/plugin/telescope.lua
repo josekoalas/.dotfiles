@@ -3,6 +3,7 @@
 local tls = require('telescope')
 tls.load_extension('fzf')
 tls.load_extension('dap')
+tls.load_extension("notify")
 
 -- Telescope Keymaps
 

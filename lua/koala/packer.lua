@@ -47,10 +47,15 @@ require('packer').startup(function(use)
         requires = { 'kyazdani42/nvim-web-devicons', opt = true }
     }
 
+    -- Dressing (prettier ui)
+    use 'stevearc/dressing.nvim'
+
+    -- Notifications
+    use 'rcarriga/nvim-notify'
 
 	--------------
 	-- Features --
-	--------------
+	-------------- 
 
 	-- Telescope (fuzzy search)
 	use {
@@ -104,6 +109,9 @@ require('packer').startup(function(use)
         }
     }
     use "jay-babu/mason-nvim-dap.nvim"
+
+    -- Overseer (task manager)
+    use 'stevearc/overseer.nvim' -- Configured with DAP
 
 	-- Navigate using Ctrl+HJKL, compatible with tmux
 	use 'christoomey/vim-tmux-navigator'
