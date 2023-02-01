@@ -173,6 +173,12 @@ require('packer').startup(function(use)
         tag = 'nightly',
     }
 
+    -- Tabs
+    use {
+        'romgrk/barbar.nvim',
+        requires = 'nvim-web-devicons'
+    }
+
 	----------
 	-- Misc --
 	----------
