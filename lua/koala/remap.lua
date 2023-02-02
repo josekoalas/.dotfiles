@@ -140,6 +140,11 @@ map('n', '<leader>r', dap.run_to_cursor, { desc = 'Debug [R]un to cursor' })
 -- Goto with g
 map('n', '<leader>g', dap.goto_, { desc = 'Debug [G]oto' })
 
+-- Start debugging lua
+map('n', '<leader>el', function()
+    require('osv').launch({port = 8086})
+end, { desc = 'Debug [L]ua' })
+
 -------------
 -- Tab bar --
 -------------

@@ -10,6 +10,7 @@ lsp.ensure_installed({
 	'clangd',
 	'tsserver',
 	'sumneko_lua',
+    'jdtls'
 })
 
 -- Fix undefined vim
@@ -21,6 +22,11 @@ lsp.configure('sumneko_lua', {
 			}
 		}
 	}
+})
+
+-- Configure jdtls
+lsp.configure('jdtls', {
+
 })
 
 -- Disable predefined keybindings

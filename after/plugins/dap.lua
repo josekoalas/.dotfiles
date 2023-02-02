@@ -10,6 +10,18 @@ dap.listeners.before.event_terminated['dapui_config'] = function() dapui.close()
 -- Python
 require('dap-python').setup('~/.virtualenvs/debugpy/bin/python')
 
+-- Lua
+dap.adapters.nlua = function(callback, config)
+    callback({ type = 'server', host = config.host or '127.0.0.1', port = config.port or 8086 })
+end
+dap.configurations.lua = {
+    {
+        type = 'nlua',
+        request = 'attach',
+        name = 'Debug neovim',
+    }
+}
+
 -- C/C++
 dap.adapters.lldb = {
     type = 'executable',
@@ -20,7 +32,7 @@ dap.configurations.cpp = {
     {
         type = 'lldb',
         request = 'launch',
-        name = 'Debug',
+        name = 'Debug C/C++',
         program = './bin/${fileBasenameNoExtension}',
         cwd = '${workspaceFolder}',
         stopOnEntry = false,
@@ -37,6 +49,16 @@ dap.configurations.cpp = {
     }
 }
 dap.configurations.c = dap.configurations.cpp
+
+-- Java
+dap.configurations.java = {
+    {
+        type = 'java',
+        request = 'launch',
+        name = 'Debug Java',
+        javaExec = '/usr/local/opt/openjdk/bin/java',
+    }
+}
 
 -- Persistent breakpoints
 

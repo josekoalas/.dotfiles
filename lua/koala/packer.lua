@@ -134,6 +134,8 @@ require('packer').startup(function(use)
             'nvim-telescope/telescope-dap.nvim', -- Telescope functions for DAPs
             'weissle/persistent-breakpoints.nvim', -- Save breakpoints automatically
             'mfussenegger/nvim-dap-python', -- DAP for python
+            'jbyuki/one-small-step-for-vimkind', -- DAP for lua and neovim
+            'mfussenegger/nvim-jdtls', -- DAP for java
             'jay-babu/mason-nvim-dap.nvim' -- Installs DAPs
         }
     }
