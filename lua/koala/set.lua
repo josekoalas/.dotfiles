@@ -1,5 +1,8 @@
 -- Vim Options
 
+-- Terminal zsh
+vim.o.shell = '/bin/zsh'
+
 -- Indentation
 vim.o.tabstop = 4 -- Number of spaces
 vim.o.shiftwidth = 0 -- Same as tabstop
