@@ -25,6 +25,7 @@ vim.o.undofile = true
 
 -- Incremental search
 vim.o.incsearch = true
+vim.o.hlsearch = false
 
 -- Minimum padding when scrolling
 vim.o.scrolloff = 8

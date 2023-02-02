@@ -62,12 +62,13 @@ require('packer').startup(function(use)
 		'nvim-telescope/telescope.nvim', tag = '0.1.1',
 		requires = {
 			'nvim-lua/plenary.nvim',
-		},
+        },
 		config = function()
 			local telescope = require('telescope')
 			telescope.load_extension('dap')
 			telescope.load_extension('notify')
-		end
+            telescope.load_extension('neoclip')
+        end
 	}
 
 	-- Treesitter (syntax, indent, more)
@@ -157,6 +158,19 @@ require('packer').startup(function(use)
 	-- Undotree (undo history)
 	use 'mbbill/undotree'
 
+    -- Clipboard manager
+    use {
+        'acksld/nvim-neoclip.lua',
+        requires = {
+            {'kkharji/sqlite.lua', module = 'sqlite'}, -- Persist history between sessions
+        },
+        config = function()
+            require('neoclip').setup{
+                history = 256,
+                enable_persistent_history = true,
+            }
+        end,
+    }
 	-- Git
 	use {
         'tpope/vim-fugitive', -- Git commands in vim

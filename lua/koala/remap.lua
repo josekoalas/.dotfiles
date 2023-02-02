@@ -7,7 +7,41 @@ local map = vim.keymap.set
 ---------
 
 -- Set <leader> to Space
-vim.g.mapleader = " "
+vim.g.mapleader = ' '
+
+-- Move selected lines with J/K
+map('v', 'J', ":m '>+1<CR>gv=gv", { desc = 'Move line down' })
+map('v', 'K', ":m '<-2<CR>gv=gv", { desc = 'Move line up' })
+
+-- Half page up/down with C-j/k (since C-d/u are remapped)
+-- Also keeps the cursor centered
+map('n', '<C-j>', '<C-d>zz', { desc = 'Half page down' })
+map('n', '<C-k>', '<C-u>zz', { desc = 'Half page up' })
+
+-- Search terms stay centered
+map('n', 'n', 'nzzzv', { desc = 'Search next' })
+map('n', 'N', 'Nzzzv', { desc = 'Search previous' })
+
+-- Paste without losing the buffer
+map('x', '<leader>p', '"_dP', { desc = 'Paste without losing buffer' })
+
+-- Copy into the system clipboard
+map('n', '<leader>y', '"+y', { desc = 'Copy to system clipboard' })
+map('v', '<leader>y', '"+y', { desc = 'Copy to system clipboard' })
+map('n', '<leader>Y', '"+Y', { desc = 'Copy to system clipboard' })
+
+-- Delete to the void register
+map('n', '<leader>d', '"_d', { desc = 'Delete to void register' })
+map('v', '<leader>d', '"_d', { desc = 'Delete to void register' })
+
+-- Don't press capital Q
+map('n', 'Q', '<nop>', { desc = 'Don\'t press capital Q' })
+
+-- Map jj to <Esc>
+map('i', 'jj', '<Esc>', { desc = 'Map jj to <Esc>' })
+
+-- Backspace to go to previous buffer
+map('n', '<BS>', '<c-^>\'”zz', { desc = 'Backspace to previous buffer' })
 
 ---------------
 -- Telescope --
@@ -17,17 +51,24 @@ local telescope = require('telescope.builtin')
 
 -- Search for files with sf (or only git files with C-s)
 map('n', '<leader>sf', telescope.find_files, { desc = '[S]earch [F]iles' })
-map('n', '<C-s>', telescope.git_files, { desc = '[S]earch only git files' })
+map('n', '<C-s>', telescope.git_files, { desc = 'Search only git files' })
 
 -- Search for a string in the project with sp
 map('n', '<leader>sp', function() telescope.grep_string({ search = vim.fn.input("Grep > ") }) end, { desc = '[S]earch [P]royect' })
+
+-- Keymap list and search
+map('n', '<leader><leader>', telescope.keymaps, { desc = 'Search mappings' })
+map('n', '<leader>sc', telescope.commands, { desc = '[S]earch [C]ommands' })
+
+-- Neoclip (clipboard manager)
+map('n', '<C-c>', ':Telescope neoclip<CR>', { desc = 'Clipboard manager' })
 
 ---------------
 -- File tree --
 ---------------
 
 -- Toggle file tree with C-t
-map('n', '<C-t>', ':NvimTreeToggle<cr>', { desc = 'View [T]ree' })
+map('n', '<C-t>', ':NvimTreeToggle<CR>', { desc = 'View [T]ree' })
 
 ------------------
 -- Undo history --
@@ -51,9 +92,9 @@ lsp.on_attach(function(_, bufnr)
     -- Show references with C-r
     map('n', '<C-r>', vim.lsp.buf.references, { desc = 'LSP [R]eferences', buffer = bufnr })
 
-    -- Hover and info with H and C-h
-    map('n', '<C-h>', vim.lsp.buf.signature_help, { desc = 'LSP [H]over signature help', buffer = bufnr })
-    map('n', 'H', vim.lsp.buf.hover, { desc = 'LSP [H]over info', buffer = bufnr })
+    -- Hover and info with C-h and h
+    map('n', '<leader>h', vim.lsp.buf.signature_help, { desc = 'LSP [H]over signature help', buffer = bufnr })
+    map('n', '<C-h>', vim.lsp.buf.hover, { desc = 'LSP [H]over info', buffer = bufnr })
 
     -- Rename with C-n
     map('n', '<C-n>', vim.lsp.buf.rename, { desc = 'LSP re[N]ame', buffer = bufnr })
