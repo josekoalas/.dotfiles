@@ -1,5 +1,6 @@
 local dap = require('dap')
 local dapui = require('dapui')
+local overseer = require('overseer')
 
 -- DAP UI
 dapui.setup{
@@ -59,12 +60,14 @@ dap.adapters.lldb = {
     command = '/usr/local/bin/lldb-vscode',
     name = 'lldb'
 }
+
+-- C/C++ gcc
 local c_cpp_config = {
     type = 'lldb',
     request = 'launch',
     name = 'Debug C/C++',
-    program = './bin/${fileBasenameNoExtension}',
-    cwd = '${workspaceFolder}',
+    program = './${relativeFileDirname}/bin/${fileBasenameNoExtension}',
+    cwd = vim.fn.getcwd(),
     stopOnEntry = false,
     runInTerminal = true,
     args = {},
@@ -76,10 +79,17 @@ local c_cpp_config = {
         return variables
     end,
     preLaunchTask = 'gcc build',
-
 }
+
+-- C/C++ make
+local make_config = c_cpp_config
+make_config.name = 'Debug C/C++ (make)'
+make_config.program = './${relativeFileDirname}/bin/main'
+make_config.preLaunchTask = 'make build'
+
 dap.configurations.cpp = {
-    c_cpp_config
+    c_cpp_config,
+    make_config
 }
 dap.configurations.c = dap.configurations.cpp
 
@@ -96,7 +106,12 @@ dap.configurations.java = {
 -- Start running keymap (using configurations)
 vim.keymap.set('n', '<C-e>', function ()
     if vim.bo.filetype == 'c' then
-        dap.run(c_cpp_config)
+        -- If there is a makefile
+        if vim.fn.filereadable('Makefile') then
+            dap.run(make_config)
+        else
+            dap.run(c_cpp_config)
+        end
     elseif vim.bo.filetype == 'cpp' then
         dap.run(c_cpp_config)
     elseif vim.bo.filetype == 'lua' then

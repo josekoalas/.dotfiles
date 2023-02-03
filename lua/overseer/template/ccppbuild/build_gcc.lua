@@ -16,4 +16,3 @@ return {
     tags = { overseer.TAG.BUILD },
     condition = { filetype = { 'c' } },
 }
-

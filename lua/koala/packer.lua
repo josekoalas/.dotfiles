@@ -51,7 +51,14 @@ require('packer').startup(function(use)
     use 'stevearc/dressing.nvim'
 
     -- Notifications
-    use 'rcarriga/nvim-notify'
+    use {
+        'rcarriga/nvim-notify',
+        config = function()
+            require('notify').setup({
+                background_colour = '#040c1a',
+            })
+        end
+    }
 
 	--------------
 	-- Features --
@@ -195,7 +202,43 @@ require('packer').startup(function(use)
             'lewis6991/gitsigns.nvim', -- Git blame and +/-
         },
         config = function()
-            vim.keymap.set('n', '<leader>gs', vim.cmd.Git, { desc = '[G]it [S]tatus' })
+            require('gitsigns').setup({
+                on_attach = function(bufnr)
+                    local gs = package.loaded.gitsigns
+
+                    local function map(mode, l, r, opts)
+                        opts = opts or {}
+                        opts.buffer = bufnr
+                        vim.keymap.set(mode, l, r, opts)
+                    end
+
+                    -- Navigation
+                    map('n', ']c', function()
+                        if vim.wo.diff then return ']c' end
+                        vim.schedule(function() gs.next_hunk() end)
+                        return '<Ignore>'
+                    end, { desc = 'Next git change' })
+
+                    map('n', '[c', function()
+                        if vim.wo.diff then return '[c' end
+                        vim.schedule(function() gs.prev_hunk() end)
+                        return '<Ignore>'
+                    end, { desc = 'Previous git change' })
+
+                    -- Toggle deleted lines
+                    map('n', '<leader>gd', gs.toggle_deleted, { desc = '[G]it toggle [D]eleted' })
+
+                    -- Reset or stage hunk
+                    map({'n', 'v'}, '<leader>gr', ':Gitsigns reset_hunk<CR>', { desc = '[G]it [R]eset hunk' })
+                    map({'n', 'v'}, '<leader>ga', ':Gitsigns stage_hunk<CR>', { desc = '[G]it [A]dd hunk' })
+
+                    -- Select the entire hunk
+                    map({'o', 'x'}, 'ih', gs.select_hunk, { desc = '[G]it select hunk' })
+
+                    -- View the changes
+                    map('n', '<leader>gv', gs.preview_hunk_inline, { desc = '[G]it [V]iew hunk' })
+                end
+            })
         end
     }
 

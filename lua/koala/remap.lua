@@ -52,15 +52,15 @@ map('n', 'U', '<C-r>', { desc = 'Redo' })
 
 local telescope = require('telescope.builtin')
 
--- Search for files with sf (or only git files with C-s)
-map('n', '<leader>sf', telescope.find_files, { desc = '[S]earch [F]iles' })
-map('n', '<C-s>', telescope.git_files, { desc = 'Search only git files' })
+-- Search for files with C-s (or only git files with sf)
+map('n', '<C-s>', telescope.find_files, { desc = 'Search files' })
+map('n', '<leader>sf', telescope.git_files, { desc = '[S]earch only git [F]iles' })
 
 -- Search for a string in the project with sp
 map('n', '<leader>sp', function() telescope.grep_string({ search = vim.fn.input("Grep > ") }) end, { desc = '[S]earch [P]royect' })
 
 -- Keymap list and search
-map('n', '<leader><leader>', telescope.keymaps, { desc = 'Search mappings' })
+map('n', '<leader>sm', telescope.keymaps, { desc = '[S]earch [M]appings' })
 map('n', '<leader>sc', telescope.commands, { desc = '[S]earch [C]ommands' })
 
 -- Neoclip (clipboard manager)
@@ -184,3 +184,8 @@ map('n', '<leader>t7', '<Cmd>BufferGoto 7<CR>', { desc = '[T]ab go to [7]' })
 map('n', '<leader>t8', '<Cmd>BufferGoto 8<CR>', { desc = '[T]ab go to [8]' })
 map('n', '<leader>t9', '<Cmd>BufferGoto 9<CR>', { desc = '[T]ab go to [9]' })
 
+---------
+-- Git --
+---------
+
+map('n', '<leader>gs', vim.cmd.Git, { desc = '[G]it [S]tatus' })
