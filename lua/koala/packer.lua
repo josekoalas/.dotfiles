@@ -59,7 +59,8 @@ require('packer').startup(function(use)
 
 	-- Telescope (fuzzy search)
 	use {
-		'nvim-telescope/telescope.nvim', tag = '0.1.1',
+		'nvim-telescope/telescope.nvim',
+        branch = '0.1.x',
 		requires = {
 			'nvim-lua/plenary.nvim',
         },
@@ -159,6 +160,14 @@ require('packer').startup(function(use)
         end
     }
 
+    -- Jupiter notebooks
+    use {
+        'luk400/vim-jukit',
+        setup = function ()
+            vim.g.jukit_terminal = 'tmux'
+        end
+    }
+
 	-- Navigate using Ctrl+HJKL, compatible with tmux
 	use 'christoomey/vim-tmux-navigator'
 
@@ -212,7 +221,7 @@ require('packer').startup(function(use)
         event = 'VimEnter',
         config = function()
             vim.defer_fn(function()
-                require('copilot').setup{
+                require('copilot').setup {
                     cmp = {
                         enabled = true,
                         method = 'getCompletionsCycling',
@@ -247,9 +256,20 @@ require('packer').startup(function(use)
 
     -- Autoclose tags
     use {
-        'm4xshen/autoclose.nvim',
+        'windwp/nvim-autopairs',
         config = function()
-            require('autoclose').setup{}
+            require('nvim-autopairs').setup {
+                check_ts = true,
+                disable_filetype = { 'TelescopePrompt', 'vim', 'NvimTree', 'dap-repl' },
+            }
+        end
+    }
+
+    -- Surround tag manager
+    use {
+        'kylechui/nvim-surround',
+        config = function()
+            require('nvim-surround').setup()
         end
     }
 
@@ -281,7 +301,7 @@ require('packer').startup(function(use)
                         quit_on_open = true,
                     },
                 }
-            }            
+            }
         end
     }
 

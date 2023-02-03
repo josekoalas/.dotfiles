@@ -13,10 +13,10 @@ vim.g.mapleader = ' '
 map('v', 'J', ":m '>+1<CR>gv=gv", { desc = 'Move line down' })
 map('v', 'K', ":m '<-2<CR>gv=gv", { desc = 'Move line up' })
 
--- Half page up/down with C-j/k (since C-d/u are remapped)
+-- Half page up/down with C-u/i (since C-d is remapped)
 -- Also keeps the cursor centered
-map('n', '<C-j>', '<C-d>zz', { desc = 'Half page down' })
-map('n', '<C-k>', '<C-u>zz', { desc = 'Half page up' })
+map('n', '<C-i>', '<C-d>zz', { desc = 'Half page down' })
+map('n', '<C-u>', '<C-u>zz', { desc = 'Half page up' })
 
 -- Search terms stay centered
 map('n', 'n', 'nzzzv', { desc = 'Search next' })
@@ -42,6 +42,9 @@ map('i', 'jj', '<Esc>', { desc = 'Map jj to <Esc>' })
 
 -- Backspace to go to previous buffer
 map('n', '<BS>', '<c-^>\'”zz', { desc = 'Backspace to previous buffer' })
+
+-- Redo with U
+map('n', 'U', '<C-r>', { desc = 'Redo' })
 
 ---------------
 -- Telescope --
@@ -116,7 +119,7 @@ local dapui = require('dapui')
 local pbr = require('persistent-breakpoints.api')
 
 local dap_keybind = function(dap_action, key)
-    if require("dap").session() then
+    if dap.session() then
         dap_action()
     else
         vim.cmd("normal! " .. key)
@@ -130,12 +133,15 @@ map('n', '<leader>ebc', pbr.set_conditional_breakpoint, { desc = '[C]onditional 
 -- Delete all breakpoints with
 map('n', '<leader>ebd', pbr.clear_all_breakpoints, { desc = '[D]elete all [B]reakpoints' })
 
--- Toggle debug UI with C-t
-map('n', '<C-t>', dapui.toggle, { desc = '[T]oggle debug UI' })
-
 -- Start/continue debugging with C-c and stop with C-t
 map('n', '<C-c>', function() dap_keybind(dap.continue, '<C-c>') end, { desc = '[C]ontinue debug' })
-map('n', '<C-q>', function() dap_keybind(dap.terminate, '<C-q>') end, { desc = '[Q]uit debug' })
+map('n', '<C-q>', function()
+    if dap.session() then
+        dap.terminate()
+    end
+    dapui.toggle()
+end, { desc = '[Q]uit debug (and toggle UI)' })
+map('n', 'C-Q', dapui.toggle, { desc = 'Toggle debug UI' })
 
 -- Step into/out/over with C-i/o/u
 map('n', '<C-i>', function() dap_keybind(dap.step_into, '<C-i>') end, { desc = '[I]n debug step' })

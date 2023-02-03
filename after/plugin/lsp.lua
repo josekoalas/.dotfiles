@@ -2,7 +2,6 @@ local lsp = require('lsp-zero')
 
 local cmp = require('cmp')
 local mason_dap = require('mason-nvim-dap')
-local neodev = require('neodev')
 
 -- LSP zero recommended settings
 lsp.preset('recommended')
@@ -16,7 +15,7 @@ lsp.ensure_installed({
 })
 
 -- Configure neodev
-neodev.setup({
+require('neodev').setup({
     library = { plugins = { 'nvim-dap-ui' }, types = true },
 })
 
@@ -42,7 +41,7 @@ lsp.configure('pylsp', {
         pylsp = {
             plugins = {
                 pycodestyle = {
-                    ignore = {'E302', 'E305'},
+                    ignore = {'E265', 'E302', 'E305'},
                 }
             }
         }
@@ -82,6 +81,13 @@ lsp.setup_nvim_cmp({
                 fallback()
             end
         end),
+        ['<Esc>'] = vim.schedule_wrap(function(fallback)
+            if cmp.visible() then
+                cmp.close()
+            else
+                fallback()
+            end
+        end),
     }),
     window = {
         border = 'rounded',
@@ -90,6 +96,9 @@ lsp.setup_nvim_cmp({
         ghost_text = true,
     }
 })
+
+-- Setup autopairs
+cmp.event:on('confirm_done', require('nvim-autopairs.completion.cmp').on_confirm_done())
 
 -- LSP zero setup
 lsp.setup()
