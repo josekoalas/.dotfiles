@@ -1,6 +1,8 @@
 local lsp = require('lsp-zero')
+
 local cmp = require('cmp')
 local mason_dap = require('mason-nvim-dap')
+local neodev = require('neodev')
 
 -- LSP zero recommended settings
 lsp.preset('recommended')
@@ -13,7 +15,12 @@ lsp.ensure_installed({
     'jdtls'
 })
 
--- Fix undefined vim
+-- Configure neodev
+neodev.setup({
+    library = { plugins = { 'nvim-dap-ui' }, types = true },
+})
+
+-- Configure sumneko_lua
 lsp.configure('sumneko_lua', {
 	settings = {
 		Lua = {
@@ -27,6 +34,19 @@ lsp.configure('sumneko_lua', {
 -- Configure jdtls
 lsp.configure('jdtls', {
 
+})
+
+-- Configure python
+lsp.configure('pylsp', {
+    settings = {
+        pylsp = {
+            plugins = {
+                pycodestyle = {
+                    ignore = {'E302', 'E305'},
+                }
+            }
+        }
+    }
 })
 
 -- Disable predefined keybindings

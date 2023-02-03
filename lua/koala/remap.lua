@@ -115,35 +115,41 @@ local dap = require('dap')
 local dapui = require('dapui')
 local pbr = require('persistent-breakpoints.api')
 
--- Toggle breakpoints with C-b and conditional breakpoints with C-B
+local dap_keybind = function(dap_action, key)
+    if require("dap").session() then
+        dap_action()
+    else
+        vim.cmd("normal! " .. key)
+    end
+end
+
+-- Toggle breakpoints with C-b and conditional breakpoints with 
 map('n', '<C-b>', pbr.toggle_breakpoint, { desc = 'Toggle [B]reakpoint' })
-map('n', '<C-B>', pbr.set_conditional_breakpoint, { desc = 'Conditional [B]reakpoint' })
+map('n', '<leader>ebc', pbr.set_conditional_breakpoint, { desc = '[C]onditional [B]reakpoint' })
 
--- Delete all breakpoints with dbr
-map('n', '<leader>dbr', pbr.clear_all_breakpoints, { desc = 'Clear all [Br]eakpoints' })
+-- Delete all breakpoints with
+map('n', '<leader>ebd', pbr.clear_all_breakpoints, { desc = '[D]elete all [B]reakpoints' })
 
--- Toggle debug UI with ps
-map('n', '<leader>et', dapui.toggle, { desc = 'Toggle De[b]ug UI' })
+-- Toggle debug UI with C-t
+map('n', '<C-t>', dapui.toggle, { desc = '[T]oggle debug UI' })
 
--- Start/continue debugging with C-e and stop with C-E
-map('n', '<C-e>', dap.continue, { desc = 'Continue debug [E]xecution' })
-map('n', '<C-E>', dap.terminate, { desc = 'Terminate debug [E]xecution' })
+-- Start/continue debugging with C-c and stop with C-t
+map('n', '<C-c>', function() dap_keybind(dap.continue, '<C-c>') end, { desc = '[C]ontinue debug' })
+map('n', '<C-q>', function() dap_keybind(dap.terminate, '<C-q>') end, { desc = '[Q]uit debug' })
 
--- Step into/out/over with i/o/u
-map('n', '<leader>i', dap.step_into, { desc = 'Debug step [I]nto' })
-map('n', '<leader>o', dap.step_over, { desc = 'Debug step [O]ver' })
-map('n', '<leader>u', dap.step_out, { desc = 'Debug step [U]p (out)' })
+-- Step into/out/over with C-i/o/u
+map('n', '<C-i>', function() dap_keybind(dap.step_into, '<C-i>') end, { desc = '[I]n debug step' })
+map('n', '<C-o>', function() dap_keybind(dap.step_out, '<C-o>') end, { desc = '[O]ut debug step' })
+map('n', '<C-u>', function() dap_keybind(dap.step_over, '<C-u>') end, { desc = '[U]p debug step (over)' })
 
--- Run to cursor with r
-map('n', '<leader>r', dap.run_to_cursor, { desc = 'Debug [R]un to cursor' })
+-- Run to cursor with C-r
+map('n', '<C-r>', function() dap_keybind(dap.run_to_cursor, '<C-r>') end, { desc = '[R]un to cursor' })
 
--- Goto with g
-map('n', '<leader>g', dap.goto_, { desc = 'Debug [G]oto' })
+-- Goto with C-g
+map('n', '<C-g>', function() dap_keybind(dap.goto_, '<C-g>') end, { desc = '[G]oto debug' })
 
--- Start debugging lua
-map('n', '<leader>el', function()
-    require('osv').launch({port = 8086})
-end, { desc = 'Debug [L]ua' })
+-- Start debugging c++/lua/python
+-- (implemented in dap.lua)
 
 -------------
 -- Tab bar --

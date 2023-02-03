@@ -122,6 +122,9 @@ require('packer').startup(function(use)
 			-- Snippets
 			'L3MON4D3/LuaSnip', -- Snippet engine
 			'rafamadriz/friendly-snippets', -- Provides snippets
+
+            -- Other
+            'folke/neodev.nvim', --Support signature help
 		}
 	}
 
@@ -132,6 +135,7 @@ require('packer').startup(function(use)
             'thehamsta/nvim-dap-virtual-text', -- Adds virual text
             'rcarriga/nvim-dap-ui', -- UI for debugging
             'nvim-telescope/telescope-dap.nvim', -- Telescope functions for DAPs
+            'thehamsta/nvim-dap-virtual-text', -- Virtual text for DAPs
             'weissle/persistent-breakpoints.nvim', -- Save breakpoints automatically
             'mfussenegger/nvim-dap-python', -- DAP for python
             'jbyuki/one-small-step-for-vimkind', -- DAP for lua and neovim
@@ -148,8 +152,9 @@ require('packer').startup(function(use)
                 dap = true,
                 templates = {
                     'builtin',
-                    'ccppbuild'
-                }
+                    'ccppbuild',
+                    'javabuild'
+                },
             }
         end
     }
