@@ -189,3 +189,42 @@ map('n', '<leader>t9', '<Cmd>BufferGoto 9<CR>', { desc = '[T]ab go to [9]' })
 ---------
 
 map('n', '<leader>gs', vim.cmd.Git, { desc = '[G]it [S]tatus' })
+
+require('gitsigns').setup({
+    on_attach = function(bufnr)
+        local gs = package.loaded.gitsigns
+
+        local function gmap(mode, l, r, opts)
+            opts = opts or {}
+            opts.buffer = bufnr
+            vim.keymap.set(mode, l, r, opts)
+        end
+
+        -- Navigation
+        gmap('n', ']c', function()
+            if vim.wo.diff then return ']c' end
+            vim.schedule(function() gs.next_hunk() end)
+            return '<Ignore>'
+        end, { desc = 'Next git change' })
+
+        gmap('n', '[c', function()
+            if vim.wo.diff then return '[c' end
+            vim.schedule(function() gs.prev_hunk() end)
+            return '<Ignore>'
+        end, { desc = 'Previous git change' })
+
+        -- Toggle deleted lines
+        gmap('n', '<leader>gd', gs.toggle_deleted, { desc = '[G]it toggle [D]eleted' })
+
+        -- Reset or stage hunk
+        gmap({'n', 'v'}, '<leader>gr', ':Gitsigns reset_hunk<CR>', { desc = '[G]it [R]eset hunk' })
+        gmap({'n', 'v'}, '<leader>ga', ':Gitsigns stage_hunk<CR>', { desc = '[G]it [A]dd hunk' })
+
+        -- Select the entire hunk
+        gmap({'o', 'x'}, 'ih', gs.select_hunk, { desc = '[G]it select hunk' })
+
+        -- View the changes
+        gmap('n', '<leader>gv', gs.preview_hunk_inline, { desc = '[G]it [V]iew hunk' })
+    end
+})
+
