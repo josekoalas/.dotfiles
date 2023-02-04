@@ -135,6 +135,7 @@ require('packer').startup(function(use)
             'folke/neodev.nvim', --Support signature help
 		}
 	}
+    use 'mfussenegger/nvim-jdtls'
 
     -- DAP (debugger)
     use {
@@ -147,7 +148,6 @@ require('packer').startup(function(use)
             'weissle/persistent-breakpoints.nvim', -- Save breakpoints automatically
             'mfussenegger/nvim-dap-python', -- DAP for python
             'jbyuki/one-small-step-for-vimkind', -- DAP for lua and neovim
-            'mfussenegger/nvim-jdtls', -- DAP for java
             'jay-babu/mason-nvim-dap.nvim' -- Installs DAPs
         }
     }
@@ -168,12 +168,12 @@ require('packer').startup(function(use)
     }
 
     -- Jupiter notebooks
-    use {
+    --[[ use {
         'luk400/vim-jukit',
         setup = function ()
             vim.g.jukit_terminal = 'tmux'
         end
-    }
+    } ]]
 
 	-- Navigate using Ctrl+HJKL, compatible with tmux
 	use 'christoomey/vim-tmux-navigator'

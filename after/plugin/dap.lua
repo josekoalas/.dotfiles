@@ -93,14 +93,15 @@ dap.configurations.cpp = {
 }
 dap.configurations.c = dap.configurations.cpp
 
--- Java TODO
+-- Java
+local java_config = {
+    type = 'java',
+    request = 'launch',
+    name = 'Debug Java',
+    preLaunchTask = 'gradle build'
+}
 dap.configurations.java = {
-    {
-        type = 'java',
-        request = 'launch',
-        name = 'Debug Java',
-        javaExec = '/usr/local/opt/openjdk/bin/java',
-    }
+    java_config
 }
 
 -- Start running keymap (using configurations)
@@ -118,6 +119,8 @@ vim.keymap.set('n', '<C-e>', function ()
         require('osv').launch({port = 8086})
     elseif vim.bo.filetype == 'python' then
         dap.run(python_config)
+    elseif vim.bo.filetype == 'java' then
+        dap.run(java_config)
     end
 end, { desc = 'Start debugging' })
 

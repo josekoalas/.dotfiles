@@ -10,8 +10,7 @@ lsp.preset('recommended')
 lsp.ensure_installed({
 	'clangd',
 	'tsserver',
-	'sumneko_lua',
-    'jdtls'
+	'sumneko_lua'
 })
 
 -- Configure neodev
@@ -28,11 +27,6 @@ lsp.configure('sumneko_lua', {
 			}
 		}
 	}
-})
-
--- Configure jdtls
-lsp.configure('jdtls', {
-
 })
 
 -- Configure python

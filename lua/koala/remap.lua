@@ -31,8 +31,8 @@ map('v', '<leader>y', '"+y', { desc = 'Copy to system clipboard' })
 map('n', '<leader>Y', '"+Y', { desc = 'Copy to system clipboard' })
 
 -- Delete to the void register
-map('n', '<leader>d', '"_d', { desc = 'Delete to void register' })
-map('v', '<leader>d', '"_d', { desc = 'Delete to void register' })
+map('n', '<leader>x', '"_d', { desc = 'Delete to void register' })
+map('v', '<leader>x', '"_d', { desc = 'Delete to void register' })
 
 -- Don't press capital Q
 map('n', 'Q', '<nop>', { desc = 'Don\'t press capital Q' })
@@ -84,31 +84,27 @@ map('n', '<C-u>', vim.cmd.UndotreeToggle, { desc = '[U]ndo tree history' })
 -- LSP --
 ---------
 
-local lsp = require('lsp-zero')
+-- Show diagnostics with d and next/previous with ]d/[d
+map('n', '<leader>d', vim.diagnostic.open_float, { desc = 'LSP [D]iagnostics' })
+map('n', '[d', vim.diagnostic.goto_next, { desc = 'LSP next [D]iagnostic' })
+map('n', ']d', vim.diagnostic.goto_prev, { desc = 'LSP previous [D]iagnostic' })
 
-lsp.on_attach(function(_, bufnr)
-    -- Show diagnostics with d and next/previous with ]d/[d
-    map('n', '<leader>d', vim.diagnostic.open_float, { desc = 'LSP [D]iagnostics', buffer = bufnr })
-    map('n', '[d', vim.diagnostic.goto_next, { desc = 'LSP next [D]iagnostic', buffer = bufnr })
-    map('n', ']d', vim.diagnostic.goto_prev, { desc = 'LSP previous [D]iagnostic', buffer = bufnr })
+-- Show references with C-r
+map('n', '<C-r>', vim.lsp.buf.references, { desc = 'LSP [R]eferences' })
 
-    -- Show references with C-r
-    map('n', '<C-r>', vim.lsp.buf.references, { desc = 'LSP [R]eferences', buffer = bufnr })
+-- Hover and info with C-h and h
+map('n', '<leader>h', vim.lsp.buf.signature_help, { desc = 'LSP [H]over signature help' })
+map('n', '<C-h>', vim.lsp.buf.hover, { desc = 'LSP [H]over info' })
 
-    -- Hover and info with C-h and h
-    map('n', '<leader>h', vim.lsp.buf.signature_help, { desc = 'LSP [H]over signature help', buffer = bufnr })
-    map('n', '<C-h>', vim.lsp.buf.hover, { desc = 'LSP [H]over info', buffer = bufnr })
+-- Rename with C-n
+map('n', '<C-n>', vim.lsp.buf.rename, { desc = 'LSP re[N]ame' })
 
-    -- Rename with C-n
-    map('n', '<C-n>', vim.lsp.buf.rename, { desc = 'LSP re[N]ame', buffer = bufnr })
+-- Go to definition with C-d and implementation with C-D
+map('n', '<C-d>', vim.lsp.buf.definition, { desc = 'LSP [D]efinition' })
+map('n', '<C-D>', vim.lsp.buf.implementation, { desc = 'LSP [D]efinition implementation' })
 
-    -- Go to definition with C-d and implementation with C-D
-    map('n', '<C-d>', vim.lsp.buf.definition, { desc = 'LSP [D]efinition', buffer = bufnr })
-    map('n', '<C-D>', vim.lsp.buf.implementation, { desc = 'LSP [D]efinition implementation', buffer = bufnr })
-
-    -- Code actions with ca
-    map('n', '<leader>ca', vim.lsp.buf.code_action, { desc = 'LSP [C]ode [A]ctions', buffer = bufnr })
-end)
+-- Code actions with ca
+map('n', '<leader>ca', vim.lsp.buf.code_action, { desc = 'LSP [C]ode [A]ctions' })
 
 -----------
 -- Debug --

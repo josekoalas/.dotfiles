@@ -1,1 +1,1 @@
-return { 'javabuild.build_java' }
+return { 'javabuild.build_gradle' }
