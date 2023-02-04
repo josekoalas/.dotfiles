@@ -9,8 +9,11 @@ lsp.preset('recommended')
 -- Default language servers (WIP)
 lsp.ensure_installed({
 	'clangd',
-	'tsserver',
-	'sumneko_lua'
+	'sumneko_lua',
+    'tsserver',
+    'eslint',
+    'html',
+    'cssls'
 })
 
 -- Configure neodev
@@ -42,6 +45,15 @@ lsp.configure('pylsp', {
     }
 })
 
+-- Configure typescript
+lsp.configure('tsserver', {
+    settings = {
+        completions = {
+            completeFunctionCalls = true
+        }
+    }
+})
+
 -- Disable predefined keybindings
 lsp.set_preferences({
 	set_lsp_keymaps = false,
@@ -64,10 +76,6 @@ lsp.setup_nvim_cmp({
         { name = 'luasnip', keyword_length = 2 },
     },
     mapping = lsp.defaults.cmp_mappings({
-        ['<CR>'] = cmp.mapping.confirm({
-            behavior = cmp.ConfirmBehavior.Replace,
-            select = false,
-        }),
         ['<Tab>'] = vim.schedule_wrap(function(fallback)
             if cmp.visible() and has_words_before() then
                 cmp.select_next_item({ behavior = cmp.SelectBehavior.Select })

@@ -70,9 +70,28 @@ require('packer').startup(function(use)
         branch = '0.1.x',
 		requires = {
 			'nvim-lua/plenary.nvim',
+            {'nvim-telescope/telescope-fzf-native.nvim', run = 'make' },
         },
 		config = function()
 			local telescope = require('telescope')
+            telescope.setup {
+                defaults = {
+                    mappings = {
+                        i = {
+                            ["<C-h>"] = "which_key"
+                        }
+                    }
+                },
+                extensions = {
+                    fzf = {
+                        fuzzy = true,
+                        override_generic_sorter = false,
+                        override_file_sorter = true,
+                        case_mode = "smart_case",
+                    },
+                }
+            }
+            telescope.load_extension('fzf')
 			telescope.load_extension('dap')
 			telescope.load_extension('notify')
             telescope.load_extension('neoclip')

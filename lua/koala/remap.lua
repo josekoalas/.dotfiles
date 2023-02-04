@@ -52,25 +52,33 @@ map('n', 'U', '<C-r>', { desc = 'Redo' })
 
 local telescope = require('telescope.builtin')
 
--- Search for files with C-s (or only git files with sf)
+-- Search for files (or only git files)
 map('n', '<C-s>', telescope.find_files, { desc = 'Search files' })
 map('n', '<leader>sf', telescope.git_files, { desc = '[S]earch only git [F]iles' })
 
--- Search for a string in the project with sp
-map('n', '<leader>sp', function() telescope.grep_string({ search = vim.fn.input("Grep > ") }) end, { desc = '[S]earch [P]royect' })
+-- Live grep and search string
+map('n', '<leader>sg', telescope.live_grep, { desc = '[S]earch [G]rep' })
+map('n', '<leader>ss', telescope.grep_string, { desc = '[S]earch [S]tring' })
 
--- Keymap list and search
+-- Keymap, command and vim options
 map('n', '<leader>sm', telescope.keymaps, { desc = '[S]earch [M]appings' })
 map('n', '<leader>sc', telescope.commands, { desc = '[S]earch [C]ommands' })
+map('n', '<leader>so', telescope.vim_options, { desc = '[S]earch [O]ptions' })
+
+-- Search help
+map('n', '<leader>sh', telescope.man_pages, { desc = '[S]earch [H]elp' })
 
 -- Neoclip (clipboard manager)
 map('n', '<C-c>', ':Telescope neoclip<CR>', { desc = 'Clipboard manager' })
+
+-- Treesitter
+map('n', '<C-f>', telescope.treesitter, { desc = '[Tr]eesitter (Function, variables)' })
 
 ---------------
 -- File tree --
 ---------------
 
--- Toggle file tree with C-t
+-- Toggle file tree
 map('n', '<C-t>', ':NvimTreeToggle<CR>', { desc = 'View [T]ree' })
 
 ------------------
@@ -88,23 +96,36 @@ map('n', '<C-u>', vim.cmd.UndotreeToggle, { desc = '[U]ndo tree history' })
 map('n', '<leader>d', vim.diagnostic.open_float, { desc = 'LSP [D]iagnostics' })
 map('n', '[d', vim.diagnostic.goto_next, { desc = 'LSP next [D]iagnostic' })
 map('n', ']d', vim.diagnostic.goto_prev, { desc = 'LSP previous [D]iagnostic' })
+map('n', '<leader>da', telescope.diagnostics, { desc = 'LSP [D]iagnostics [A]ll' })
 
--- Show references with C-r
-map('n', '<C-r>', vim.lsp.buf.references, { desc = 'LSP [R]eferences' })
+-- Show references
+map('n', '<C-r>', telescope.lsp_references, { desc = 'LSP [R]eferences' })
 
--- Hover and info with C-h and h
-map('n', '<leader>h', vim.lsp.buf.signature_help, { desc = 'LSP [H]over signature help' })
-map('n', '<C-h>', vim.lsp.buf.hover, { desc = 'LSP [H]over info' })
+-- Hover and info
+map('n', '<C-h>', vim.lsp.buf.signature_help, { desc = 'LSP [H]over function signature help' })
+map('n', '<leader>h', vim.lsp.buf.hover, { desc = 'LSP [H]over info' })
 
--- Rename with C-n
+-- Incoming and outgoing calls
+map('n', '<leader>ci', telescope.lsp_incoming_calls, { desc = 'LSP [I]ncoming [C]alls' })
+map('n', '<leader>co', telescope.lsp_outgoing_calls, { desc = 'LSP [O]utgoing [C]alls' })
+
+-- Symbols (workspace and document) and type definitions
+map('n', '<leader>sd', telescope.lsp_document_symbols, { desc = 'LSP [S]ymbols [D]ocument' })
+map('n', '<leader>sw', telescope.lsp_workspace_symbols, { desc = 'LSP [S]ymbols [W]orkspace' })
+map('n', '<leader>st', telescope.lsp_type_definitions, { desc = 'LSP [S]ymbols [T]ype definitions' })
+
+-- Rename
 map('n', '<C-n>', vim.lsp.buf.rename, { desc = 'LSP re[N]ame' })
 
--- Go to definition with C-d and implementation with C-D
-map('n', '<C-d>', vim.lsp.buf.definition, { desc = 'LSP [D]efinition' })
-map('n', '<C-D>', vim.lsp.buf.implementation, { desc = 'LSP [D]efinition implementation' })
+-- Go to definition with and implementation
+map('n', '<C-d>', telescope.lsp_definitions, { desc = 'LSP [D]efinition' })
+map('n', '<leader>gd', vim.lsp.buf.implementation, { desc = 'LSP [D]efinition implementation' })
 
 -- Code actions with ca
 map('n', '<leader>ca', vim.lsp.buf.code_action, { desc = 'LSP [C]ode [A]ctions' })
+
+-- Format buffer
+map('n', '<leader>ff', vim.lsp.buf.format, { desc = 'LSP [F]ormat [F]ile' })
 
 -----------
 -- Debug --
@@ -114,43 +135,35 @@ local dap = require('dap')
 local dapui = require('dapui')
 local pbr = require('persistent-breakpoints.api')
 
-local dap_keybind = function(dap_action, key)
-    if dap.session() then
-        dap_action()
-    else
-        vim.cmd("normal! " .. key)
-    end
-end
-
--- Toggle breakpoints with C-b and conditional breakpoints with 
-map('n', '<C-b>', pbr.toggle_breakpoint, { desc = 'Toggle [B]reakpoint' })
-map('n', '<leader>ebc', pbr.set_conditional_breakpoint, { desc = '[C]onditional [B]reakpoint' })
+-- Toggle breakpoints and conditional breakpoints
+map('n', '<C-b>', pbr.toggle_breakpoint, { desc = 'DAP Toggle [B]reakpoint' })
+map('n', '<leader>dapcb', pbr.set_conditional_breakpoint, { desc = '[DAP] [C]onditional [B]reakpoint' })
 
 -- Delete all breakpoints with
-map('n', '<leader>ebd', pbr.clear_all_breakpoints, { desc = '[D]elete all [B]reakpoints' })
+map('n', '<leader>dapdb', pbr.clear_all_breakpoints, { desc = '[DAP] [D]elete all [B]reakpoints' })
 
--- Start/continue debugging with C-c and stop with C-t
-map('n', '<C-c>', function() dap_keybind(dap.continue, '<C-c>') end, { desc = '[C]ontinue debug' })
+-- Continue/stop debugging (also toggle the debug interface)
+map('n', '<C-c>', dap.continue, { desc = 'DAP [C]ontinue debug' })
 map('n', '<C-q>', function()
     if dap.session() then
         dap.terminate()
     end
     dapui.toggle()
-end, { desc = '[Q]uit debug (and toggle UI)' })
-map('n', 'C-Q', dapui.toggle, { desc = 'Toggle debug UI' })
+end, { desc = 'DAP [Q]uit debug (and toggle UI)' })
+map('n', '<leader>dapt', dapui.toggle, { desc = 'DAP Toggle debug UI' })
 
 -- Step into/out/over with C-i/o/u
-map('n', '<C-i>', function() dap_keybind(dap.step_into, '<C-i>') end, { desc = '[I]n debug step' })
-map('n', '<C-o>', function() dap_keybind(dap.step_out, '<C-o>') end, { desc = '[O]ut debug step' })
-map('n', '<C-u>', function() dap_keybind(dap.step_over, '<C-u>') end, { desc = '[U]p debug step (over)' })
+map('n', '<C-i>', dap.step_into, { desc = 'DAP [I]n debug step' })
+map('n', '<leader>dapo', dap.step_out, { desc = '[DAP] [O]ut debug step' })
+map('n', '<leader>dapu', dap.step_over, { desc = '[DAP] [U]p debug step (over)' })
 
--- Run to cursor with C-r
-map('n', '<C-r>', function() dap_keybind(dap.run_to_cursor, '<C-r>') end, { desc = '[R]un to cursor' })
+-- Run to cursor
+map('n', '<leader>dapc', dap.run_to_cursor, { desc = '[DAP] run to [C]ursor' })
 
--- Goto with C-g
-map('n', '<C-g>', function() dap_keybind(dap.goto_, '<C-g>') end, { desc = '[G]oto debug' })
+-- Goto
+map('n', '<leader>dapg', dap.goto_, { desc = '[DAP] [G]oto' })
 
--- Start debugging c++/lua/python
+-- Start debugging c++/lua/python C-e
 -- (implemented in dap.lua)
 
 -------------
@@ -184,7 +197,9 @@ map('n', '<leader>t9', '<Cmd>BufferGoto 9<CR>', { desc = '[T]ab go to [9]' })
 -- Git --
 ---------
 
-map('n', '<leader>gs', vim.cmd.Git, { desc = '[G]it [S]tatus' })
+map('n', '<leader>gs', telescope.git_status, { desc = '[G]it [S]tatus' })
+map('n', '<leader>gb', telescope.git_branches, { desc = '[G]it [B]ranches' })
+map('n', '<leader>gc', telescope.git_commits, { desc = '[G]it [C]ommits' })
 
 require('gitsigns').setup({
     on_attach = function(bufnr)
@@ -210,7 +225,7 @@ require('gitsigns').setup({
         end, { desc = 'Previous git change' })
 
         -- Toggle deleted lines
-        gmap('n', '<leader>gd', gs.toggle_deleted, { desc = '[G]it toggle [D]eleted' })
+        gmap('n', '<leader>gt', gs.toggle_deleted, { desc = '[G]it [T]oggle deleted' })
 
         -- Reset or stage hunk
         gmap({'n', 'v'}, '<leader>gr', ':Gitsigns reset_hunk<CR>', { desc = '[G]it [R]eset hunk' })
