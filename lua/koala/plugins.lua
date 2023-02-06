@@ -58,14 +58,6 @@ return {
     -- Dressing (prettier ui)
     'stevearc/dressing.nvim',
 
-    -- Notifications
-    {
-        'rcarriga/nvim-notify',
-        opts = {
-            background_colour = '#040c1a',
-        }
-    },
-
 	--------------
 	-- Features --
 	-------------- 
@@ -76,7 +68,32 @@ return {
         branch = '0.1.x',
 		dependencies = {
 			'nvim-lua/plenary.nvim',
-            {'nvim-telescope/telescope-fzf-native.nvim', build = 'make' },
+            { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' },
+            {
+                'nvim-telescope/telescope-file-browser.nvim',
+                dependencies = {
+                    'nvim-tree/nvim-web-devicons'
+                },
+                opts = {
+                    hijack_netrw = true,
+                }
+            },
+            {
+                'acksld/nvim-neoclip.lua',
+                dependencies = {
+                    'kkharji/sqlite.lua', -- Persist history between sessions
+                },
+                opts = {
+                    history = 256,
+                    enable_persistent_history = true,
+                }
+            },
+            {
+                'rcarriga/nvim-notify',
+                opts = {
+                    background_colour = '#040c1a',
+                }
+            },
         },
 		config = function()
 			local telescope = require('telescope')
@@ -98,9 +115,9 @@ return {
                 }
             }
             telescope.load_extension('fzf')
-			telescope.load_extension('dap')
 			telescope.load_extension('notify')
             telescope.load_extension('neoclip')
+            telescope.load_extension('file_browser')
         end
 	},
 
@@ -177,7 +194,6 @@ return {
                         config = true
                     },
                 },
-                event = 'InsertEnter',
             },
 
             -- Other
@@ -197,14 +213,24 @@ return {
         dependencies = {
             'thehamsta/nvim-dap-virtual-text', -- Adds virual text
             'rcarriga/nvim-dap-ui' , -- UI for debugging
-            'nvim-telescope/telescope-dap.nvim', -- Telescope functions for DAPs
             'thehamsta/nvim-dap-virtual-text', -- Virtual text for DAPs
+            'mfussenegger/nvim-dap-python', -- DAP for python
             { 'weissle/persistent-breakpoints.nvim' , opts = { load_breakpoints_event = { "BufReadPost" } }}, -- Save breakpoints automatically
-            'mfussenegger/nvim-dap-python', -- DAP for python       
+            {
+                'nvim-telescope/telescope-dap.nvim', -- Telescope functions for DAPs
+                dependencies = {
+                    'nvim-telescope/telescope.nvim',
+                },
+                config = function()
+                    require('telescope').load_extension('dap')
+                end
+            }
         },
         config = function()
             require('koala.dap').setup()
-        end
+            require('koala.remap').dap()
+        end,
+        keys = { '<C-e>', '<C-b>' }
     },
 
     -- Overseer (task manager)
@@ -240,7 +266,9 @@ return {
         'jakewvincent/mkdnflow.nvim',
         opts = {
             mappings = {
-                MkdnEnter = {{'i', 'n', 'v'}, '<C-CR>'}
+                MkdnEnter = {{'i', 'n', 'v'}, '<C-CR>'},
+                MkdnNextLink = false,
+                MkdnPrevLink = false,
             }
         },
         ft = { 'markdown' },
@@ -253,18 +281,6 @@ return {
 	{
         'mbbill/undotree',
         cmd = { 'UndotreeToggle' },
-    },
-
-    -- Clipboard manager
-    {
-        'acksld/nvim-neoclip.lua',
-        dependencies = {
-            'kkharji/sqlite.lua', -- Persist history between sessions
-        },
-        opts = {
-            history = 256,
-            enable_persistent_history = true,
-        }
     },
 
 	-- Autosave
@@ -286,9 +302,12 @@ return {
         'tpope/vim-fugitive', -- Git commands in vim
         dependencies = {
             'tpope/vim-rhubarb', -- GitHub integrations for fugitive
-            'lewis6991/gitsigns.nvim', -- Git blame and +/-
         },
         cmd = 'Git',
+    },
+    {
+        'lewis6991/gitsigns.nvim',
+        config = true,
     },
 
     -- Comments
@@ -308,39 +327,6 @@ return {
 
     -- Surround tag manager
     'kylechui/nvim-surround',
-
-    -- File explorer
-    {
-        'nvim-tree/nvim-tree.lua',
-        dependencies = {
-            'nvim-tree/nvim-web-devicons'
-        },
-        tag = 'nightly',
-        opts = {
-            update_focused_file = { enable = true },
-            git = { show_on_dirs = false },
-            view = {
-                signcolumn = "auto",
-            },
-            renderer = {
-                icons = {
-                    glyphs = {
-                        git = {
-                            unstaged = "○",
-                            untracked = "✻",
-                        }
-                    }
-                }
-            },
-            filters = { dotfiles = true },
-            actions = {
-                open_file = {
-                    quit_on_open = true,
-                },
-            }
-        },
-        cmd = 'NvimTreeToggle'
-    },
 
     -- Tabs
     {

@@ -80,7 +80,7 @@ map('n', '<C-f>', telescope.treesitter, { desc = '[Tr]eesitter (Function, variab
 ---------------
 
 -- Toggle file tree
-map('n', '<C-t>', ':NvimTreeToggle<CR>', { desc = 'View [T]ree' })
+map('n', '<C-t>', ':Telescope file_browser<CR>', { desc = 'View [T]ree' })
 
 ------------------
 -- Undo history --
@@ -132,56 +132,58 @@ map('n', '<leader>ff', vim.lsp.buf.format, { desc = 'LSP [F]ormat [F]ile' })
 -- Debug --
 -----------
 
-local dap = require('dap')
-local dapui = require('dapui')
-local pbr = require('persistent-breakpoints.api')
-local dap_conf = require('koala.dap')
+local dap_keymap = function()
+    local dap = require('dap')
+    local dapui = require('dapui')
+    local pbr = require('persistent-breakpoints.api')
+    local dap_conf = require('koala.dap')
 
--- Toggle breakpoints and conditional breakpoints
-map('n', '<C-b>', pbr.toggle_breakpoint, { desc = 'DAP Toggle [B]reakpoint' })
-map('n', '<leader>dapcb', pbr.set_conditional_breakpoint, { desc = '[DAP] [C]onditional [B]reakpoint' })
+    -- Toggle breakpoints and conditional breakpoints
+    map('n', '<C-b>', pbr.toggle_breakpoint, { desc = 'DAP Toggle [B]reakpoint' })
+    map('n', '<leader>dapcb', pbr.set_conditional_breakpoint, { desc = '[DAP] [C]onditional [B]reakpoint' })
 
--- Delete all breakpoints with
-map('n', '<leader>dapdb', pbr.clear_all_breakpoints, { desc = '[DAP] [D]elete all [B]reakpoints' })
+    -- Delete all breakpoints with
+    map('n', '<leader>dapdb', pbr.clear_all_breakpoints, { desc = '[DAP] [D]elete all [B]reakpoints' })
 
--- Continue/stop debugging (also toggle the debug interface)
-map('n', '<C-c>', dap.continue, { desc = 'DAP [C]ontinue debug' })
-map('n', '<C-q>', function()
-    if dap.session() then
-        dap.terminate()
-    end
-    dapui.toggle()
-end, { desc = 'DAP [Q]uit debug (and toggle UI)' })
-map('n', '<leader>dapt', dapui.toggle, { desc = 'DAP Toggle debug UI' })
-
--- Step into/out/over with C-i/o/u
-map('n', '<C-i>', dap.step_into, { desc = 'DAP [I]n debug step' })
-map('n', '<leader>dapo', dap.step_out, { desc = '[DAP] [O]ut debug step' })
-map('n', '<leader>dapu', dap.step_over, { desc = '[DAP] [U]p debug step (over)' })
-
--- Run to cursor
-map('n', '<leader>dapc', dap.run_to_cursor, { desc = '[DAP] run to [C]ursor' })
-
--- Goto
-map('n', '<leader>dapg', dap.goto_, { desc = '[DAP] [G]oto' })
-
--- Start debugging c++/lua/python C-e
-map('n', '<C-e>', function ()
-    if vim.bo.filetype == 'c' then
-        -- If there is a makefile
-        if vim.fn.filereadable('Makefile') then
-            dap.run(dap_conf.config.make)
-        else
-            dap.run(dap_conf.config.ccpp)
+    -- Continue/stop debugging (also toggle the debug interface)
+    map('n', '<C-c>', dap.continue, { desc = 'DAP [C]ontinue debug' })
+    map('n', '<C-q>', function()
+        if dap.session() then
+            dap.terminate()
         end
-    elseif vim.bo.filetype == 'cpp' then
-        dap.run(dap_conf.config.ccpp)
-    elseif vim.bo.filetype == 'python' then
-        dap.run(dap_conf.config.python)
-    elseif vim.bo.filetype == 'java' then
-        dap.run(dap_conf.config.java)
-    end
-end, { desc = 'Start debugging' })
+        dapui.toggle()
+    end, { desc = 'DAP [Q]uit debug (and toggle UI)' })
+    map('n', '<leader>dapt', dapui.toggle, { desc = 'DAP Toggle debug UI' })
+
+    -- Step into/out/over with C-i/o/u
+    map('n', '<C-i>', dap.step_into, { desc = 'DAP [I]n debug step' })
+    map('n', '<leader>dapo', dap.step_out, { desc = '[DAP] [O]ut debug step' })
+    map('n', '<leader>dapu', dap.step_over, { desc = '[DAP] [U]p debug step (over)' })
+
+    -- Run to cursor
+    map('n', '<leader>dapc', dap.run_to_cursor, { desc = '[DAP] run to [C]ursor' })
+
+    -- Goto
+    map('n', '<leader>dapg', dap.goto_, { desc = '[DAP] [G]oto' })
+
+    -- Start debugging c++/lua/python C-e
+    map('n', '<C-e>', function ()
+        if vim.bo.filetype == 'c' then
+            -- If there is a makefile
+            if vim.fn.filereadable('Makefile') then
+                dap.run(dap_conf.config.make)
+            else
+                dap.run(dap_conf.config.ccpp)
+            end
+        elseif vim.bo.filetype == 'cpp' then
+            dap.run(dap_conf.config.ccpp)
+        elseif vim.bo.filetype == 'python' then
+            dap.run(dap_conf.config.python)
+        elseif vim.bo.filetype == 'java' then
+            dap.run(dap_conf.config.java)
+        end
+    end, { desc = 'Start debugging' })
+end
 
 -------------
 -- Tab bar --
@@ -218,46 +220,49 @@ map('n', '<leader>gs', telescope.git_status, { desc = '[G]it [S]tatus' })
 map('n', '<leader>gb', telescope.git_branches, { desc = '[G]it [B]ranches' })
 map('n', '<leader>gc', telescope.git_commits, { desc = '[G]it [C]ommits' })
 
-require('gitsigns').setup({
-    on_attach = function(bufnr)
-        local gs = package.loaded.gitsigns
+require('gitsigns').on_attach = function(bufnr)
+    local gs = package.loaded.gitsigns
 
-        local function gmap(mode, l, r, opts)
-            opts = opts or {}
-            opts.buffer = bufnr
-            vim.keymap.set(mode, l, r, opts)
-        end
-
-        -- Navigation
-        gmap('n', ']c', function()
-            if vim.wo.diff then return ']c' end
-            vim.schedule(function() gs.next_hunk() end)
-            return '<Ignore>'
-        end, { desc = 'Next git change' })
-
-        gmap('n', '[c', function()
-            if vim.wo.diff then return '[c' end
-            vim.schedule(function() gs.prev_hunk() end)
-            return '<Ignore>'
-        end, { desc = 'Previous git change' })
-
-        -- Toggle deleted lines
-        gmap('n', '<leader>gt', gs.toggle_deleted, { desc = '[G]it [T]oggle deleted' })
-
-        -- Reset or stage hunk
-        gmap({'n', 'v'}, '<leader>gr', ':Gitsigns reset_hunk<CR>', { desc = '[G]it [R]eset hunk' })
-        gmap({'n', 'v'}, '<leader>ga', ':Gitsigns stage_hunk<CR>', { desc = '[G]it [A]dd hunk' })
-
-        -- Select the entire hunk
-        gmap({'o', 'x'}, 'ih', gs.select_hunk, { desc = '[G]it select hunk' })
-
-        -- View the changes
-        gmap('n', '<leader>gv', gs.preview_hunk_inline, { desc = '[G]it [V]iew hunk' })
+    local function gmap(mode, l, r, opts)
+        opts = opts or {}
+        opts.buffer = bufnr
+        vim.keymap.set(mode, l, r, opts)
     end
-})
+
+    -- Navigation
+    gmap('n', ']c', function()
+        if vim.wo.diff then return ']c' end
+        vim.schedule(function() gs.next_hunk() end)
+        return '<Ignore>'
+    end, { desc = 'Next git change' })
+
+    gmap('n', '[c', function()
+        if vim.wo.diff then return '[c' end
+        vim.schedule(function() gs.prev_hunk() end)
+        return '<Ignore>'
+    end, { desc = 'Previous git change' })
+
+    -- Toggle deleted lines
+    gmap('n', '<leader>gt', gs.toggle_deleted, { desc = '[G]it [T]oggle deleted' })
+
+    -- Reset or stage hunk
+    gmap({'n', 'v'}, '<leader>gr', ':Gitsigns reset_hunk<CR>', { desc = '[G]it [R]eset hunk' })
+    gmap({'n', 'v'}, '<leader>ga', ':Gitsigns stage_hunk<CR>', { desc = '[G]it [A]dd hunk' })
+
+    -- Select the entire hunk
+    gmap({'o', 'x'}, 'ih', gs.select_hunk, { desc = '[G]it select hunk' })
+
+    -- View the changes
+    gmap('n', '<leader>gv', gs.preview_hunk_inline, { desc = '[G]it [V]iew hunk' })
+end
 
 --------------
 -- Markdown --
 --------------
 
 map('n', '<leader>md', '<Plug>MarkdownPreviewToggle', { desc = '[M]ark[d]own preview toggle' })
+
+
+return {
+    dap = dap_keymap,
+}
