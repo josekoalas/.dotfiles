@@ -13,10 +13,14 @@ vim.g.mapleader = ' '
 map('v', 'J', ":m '>+1<CR>gv=gv", { desc = 'Move line down' })
 map('v', 'K', ":m '<-2<CR>gv=gv", { desc = 'Move line up' })
 
--- Half page up/down with C-u/i (since C-d is remapped)
+-- Half page up/down with C-j/k (since C-d/u are remapped)
 -- Also keeps the cursor centered
-map('n', '<C-i>', '<C-d>zz', { desc = 'Half page down' })
-map('n', '<C-u>', '<C-u>zz', { desc = 'Half page up' })
+map('n', '<C-j>', '<C-d>zz', { desc = 'Half page down' })
+map('n', '<C-k>', '<C-u>zz', { desc = 'Half page up' })
+
+-- Add lines bellow/above the cursor with Enter/Shift-Enter
+map('n', '<Enter>', 'o<Esc>', { desc = 'Add line bellow' })
+map('n', '<S-Enter>', 'O<Esc>', { desc = 'Add line above' })
 
 -- Search terms stay centered
 map('n', 'n', 'nzzzv', { desc = 'Search next' })
@@ -239,3 +243,8 @@ require('gitsigns').setup({
     end
 })
 
+--------------
+-- Markdown --
+--------------
+
+map('n', '<leader>md', '<Plug>MarkdownPreviewToggle', { desc = '[M]ark[d]own preview toggle' })

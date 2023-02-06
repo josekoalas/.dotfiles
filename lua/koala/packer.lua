@@ -102,6 +102,9 @@ require('packer').startup(function(use)
 	use {
 		'nvim-treesitter/nvim-treesitter',
 		run = ':TSUpdate',
+        requires = {
+            'nvim-treesitter/nvim-treesitter-context'
+        },
         config = function()
             require('nvim-treesitter').setup {
                 ensure_installed = {
@@ -194,8 +197,28 @@ require('packer').startup(function(use)
         end
     } ]]
 
+    -- Markdown
+    use({
+        'iamcco/markdown-preview.nvim',
+        run = 'cd app && npm install',
+        setup = function()
+            vim.g.mkdp_filetypes = { 'markdown' }
+        end,
+        ft = { 'markdown' },
+    })
+    use({
+        'jakewvincent/mkdnflow.nvim',
+        config = function()
+            require('mkdnflow').setup {
+                mappings = {
+                    MkdnEnter = {{'i', 'n', 'v'}, '<C-CR>'}
+                }
+            }
+        end
+    })
+
 	-- Navigate using Ctrl+HJKL, compatible with tmux
-	use 'christoomey/vim-tmux-navigator'
+	--[[ use 'christoomey/vim-tmux-navigator' ]]
 
 	-- Undotree (undo history)
 	use 'mbbill/undotree'
@@ -207,7 +230,7 @@ require('packer').startup(function(use)
             {'kkharji/sqlite.lua', module = 'sqlite'}, -- Persist history between sessions
         },
         config = function()
-            require('neoclip').setup{
+            require('neoclip').setup {
                 history = 256,
                 enable_persistent_history = true,
             }
@@ -332,6 +355,17 @@ require('packer').startup(function(use)
     use {
         'romgrk/barbar.nvim',
         requires = 'nvim-web-devicons'
+    }
+
+    -- Autosave sessions
+    use {
+        'rmagatti/auto-session',
+        config = function()
+            require('auto-session').setup {
+                log_level = 'error',
+                auto_session_suppress_dirs = { '~/', '~/Downloads', '/'},
+            }
+        end
     }
 
 	----------
