@@ -6,9 +6,6 @@ local map = vim.keymap.set
 -- Vim --
 ---------
 
--- Set <leader> to Space
-vim.g.mapleader = ' '
-
 -- Move selected lines with J/K
 map('v', 'J', ":m '>+1<CR>gv=gv", { desc = 'Move line down' })
 map('v', 'K', ":m '<-2<CR>gv=gv", { desc = 'Move line up' })
@@ -138,6 +135,7 @@ map('n', '<leader>ff', vim.lsp.buf.format, { desc = 'LSP [F]ormat [F]ile' })
 local dap = require('dap')
 local dapui = require('dapui')
 local pbr = require('persistent-breakpoints.api')
+local dap_conf = require('koala.dap')
 
 -- Toggle breakpoints and conditional breakpoints
 map('n', '<C-b>', pbr.toggle_breakpoint, { desc = 'DAP Toggle [B]reakpoint' })
@@ -168,7 +166,22 @@ map('n', '<leader>dapc', dap.run_to_cursor, { desc = '[DAP] run to [C]ursor' })
 map('n', '<leader>dapg', dap.goto_, { desc = '[DAP] [G]oto' })
 
 -- Start debugging c++/lua/python C-e
--- (implemented in dap.lua)
+map('n', '<C-e>', function ()
+    if vim.bo.filetype == 'c' then
+        -- If there is a makefile
+        if vim.fn.filereadable('Makefile') then
+            dap.run(dap_conf.config.make)
+        else
+            dap.run(dap_conf.config.ccpp)
+        end
+    elseif vim.bo.filetype == 'cpp' then
+        dap.run(dap_conf.config.ccpp)
+    elseif vim.bo.filetype == 'python' then
+        dap.run(dap_conf.config.python)
+    elseif vim.bo.filetype == 'java' then
+        dap.run(dap_conf.config.java)
+    end
+end, { desc = 'Start debugging' })
 
 -------------
 -- Tab bar --
