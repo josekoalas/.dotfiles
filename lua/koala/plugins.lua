@@ -1,4 +1,4 @@
--- Plugin setup for Lazy
+-- Plugin setup for Lazyplugi
 
 return {
 	-------------------
@@ -58,12 +58,9 @@ return {
         }
     },
 
-    -- Dressing (prettier ui)
-    'stevearc/dressing.nvim',
-
-	--------------
-	-- Features --
-	-------------- 
+	---------------------------
+	-- Navigation and search --
+	---------------------------
 
 	-- Telescope (fuzzy search)
 	{
@@ -72,15 +69,6 @@ return {
 		dependencies = {
 			'nvim-lua/plenary.nvim',
             { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' },
-            {
-                'nvim-telescope/telescope-file-browser.nvim',
-                dependencies = {
-                    'nvim-tree/nvim-web-devicons'
-                },
-                opts = {
-                    hijack_netrw = true,
-                }
-            },
             {
                 'acksld/nvim-neoclip.lua',
                 dependencies = {
@@ -120,9 +108,53 @@ return {
             telescope.load_extension('fzf')
 			telescope.load_extension('notify')
             telescope.load_extension('neoclip')
-            telescope.load_extension('file_browser')
         end
 	},
+
+    -- Navigate using Alt+HJKL, compatible with tmux
+	'christoomey/vim-tmux-navigator',
+
+    -- File tree
+    {
+        'nvim-tree/nvim-tree.lua',
+        dependencies = { 'nvim-tree/nvim-web-devicons' },
+        tag = 'nightly',
+        opts = {
+            update_focused_file = { enable = true },
+            git = { show_on_dirs = false },
+            view = {
+                signcolumn = "auto",
+            },
+            renderer = {
+                icons = {
+                    glyphs = {
+                        git = {
+                            unstaged = "○",
+                            untracked = "✻",
+                        }
+                    }
+                }
+            },
+            filters = { dotfiles = true },
+            actions = {
+                open_file = {
+                    quit_on_open = true,
+                },
+            }
+        }
+    },
+
+    -- Tabs
+    {
+        'romgrk/barbar.nvim',
+        dependencies = {
+            'nvim-tree/nvim-web-devicons'
+        },
+    },
+
+    ----------
+    -- Code --
+    ----------
 
 	-- Treesitter (syntax, indent, more)
 	{
@@ -174,7 +206,6 @@ return {
                     'hrsh7th/cmp-buffer', -- Suggestions from current buffer
                     'hrsh7th/cmp-path', -- Suggestions from the filesystem
                     'saadparwaiz1/cmp_luasnip', -- Snippets in the suggestions
-                    'hrsh7th/cmp-nvim-lua', -- Provides completions based on neovim lua api
                     {
                         'zbirenbaum/copilot-cmp', -- Copilot completions
                         dependencies = {
@@ -191,11 +222,22 @@ return {
                                             inlineSuggestCount = 3,
                                         }
                                     }
+                                },
+                                filetypes = {
+                                    markdown = true,
                                 }
                             }
                         },
                         config = true
                     },
+                },
+            },
+
+            -- Snippets
+            {
+                'l3mon4d3/luasnip',
+                dependencies = {
+                    'rafamadriz/friendly-snippets',
                 },
             },
 
@@ -210,11 +252,73 @@ return {
     -- LSP for Java
     { 'mfussenegger/nvim-jdtls', ft = 'java' },
 
+    -- Markdown
+    {
+        'iamcco/markdown-preview.nvim',
+        build = 'cd app && npm install',
+        config = function()
+            vim.g.mkdp_filetypes = { 'markdown' }
+            vim.g.mkdp_port = '5656'
+            vim.g.mkdp_browser = 'firefox'
+        end,
+        ft = { 'markdown' },
+    },
+    {
+        'jakewvincent/mkdnflow.nvim',
+        opts = {
+            mappings = {
+                MkdnEnter = {{'i', 'n', 'v'}, '<C-CR>'},
+                MkdnNextLink = false,
+                MkdnPrevLink = false,
+                MkdnTableNextCell = false,
+                MkdnTablePrevCell = false,
+            }
+        },
+        ft = { 'markdown' },
+    },
+
+    -- Jupiter notebooks
+    --[[ {
+        'luk400/vim-jukit',
+        ft = { 'jupyter' }
+    }, ]]
+
+    -- Autoclose tags
+    {
+        'windwp/nvim-autopairs',
+        opts = {
+            check_ts = true,
+            disable_filetype = { 'TelescopePrompt', 'vim', 'NvimTree', 'dap-repl' },
+        }
+    },
+
+    -- Surround tag manager
+    {
+        'kylechui/nvim-surround',
+        opts = {
+            keymaps = {
+                insert = "<C-g>s",
+                insert_line = "<C-g>S",
+                normal = "ys",
+                normal_cur = "yss",
+                normal_line = "yS",
+                normal_cur_line = "ySS",
+                visual = "S",
+                visual_line = "gS",
+                delete = "ds",
+                change = "cs",
+            }
+        }
+    },
+
+    ---------------
+    -- Debugging --
+    ---------------
+
     -- DAP (debugger)
     {
         'mfussenegger/nvim-dap',
         dependencies = {
-            'thehamsta/nvim-dap-virtual-text', -- Adds virual text
             'rcarriga/nvim-dap-ui' , -- UI for debugging
             'thehamsta/nvim-dap-virtual-text', -- Virtual text for DAPs
             'mfussenegger/nvim-dap-python', -- DAP for python
@@ -250,35 +354,9 @@ return {
         ft = { 'c', 'cpp', 'java', 'python' }
     },
 
-    -- Jupiter notebooks
-    {
-        'luk400/vim-jukit',
-        ft = { 'jupyter' }
-    },
-
-    -- Markdown
-    {
-        'iamcco/markdown-preview.nvim',
-        build = 'cd app && npm install',
-        config = function()
-            vim.g.mkdp_filetypes = { 'markdown' }
-        end,
-        ft = { 'markdown' },
-    },
-    {
-        'jakewvincent/mkdnflow.nvim',
-        opts = {
-            mappings = {
-                MkdnEnter = {{'i', 'n', 'v'}, '<C-CR>'},
-                MkdnNextLink = false,
-                MkdnPrevLink = false,
-            }
-        },
-        ft = { 'markdown' },
-    },
-
-	-- Navigate using Ctrl+HJKL, compatible with tmux
-	--[[ 'christoomey/vim-tmux-navigator', ]]
+    -----------
+    -- Other --
+    -----------
 
 	-- Undotree (undo history)
 	{
@@ -310,33 +388,22 @@ return {
     },
     {
         'lewis6991/gitsigns.nvim',
-        config = true,
+        config = true
     },
 
     -- Comments
     {
         'numtostr/comment.nvim',
-        keys = { 'gc', 'gcc', 'gb', 'gbc' },
-    },
-
-    -- Autoclose tags
-    {
-        'windwp/nvim-autopairs',
         opts = {
-            check_ts = true,
-            disable_filetype = { 'TelescopePrompt', 'vim', 'NvimTree', 'dap-repl' },
+            toggler = {
+                line = 'tc',
+                block = 'tb',
+            },
+            opleader = {
+                line = 'tc',
+                block = 'tb',
+            },
         }
-    },
-
-    -- Surround tag manager
-    'kylechui/nvim-surround',
-
-    -- Tabs
-    {
-        'romgrk/barbar.nvim',
-        dependencies = {
-            'nvim-tree/nvim-web-devicons'
-        },
     },
 
     -- Autosave sessions
@@ -347,10 +414,6 @@ return {
             auto_session_suppress_dirs = { '~/', '~/Downloads', '/'},
         }
     },
-
-	----------
-	-- Misc --
-	----------
 
     -- Keymaps
     {

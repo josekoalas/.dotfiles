@@ -70,7 +70,7 @@ map('n', '<leader>so', telescope.vim_options, { desc = '[S]earch [O]ptions' })
 map('n', '<leader>sh', telescope.man_pages, { desc = '[S]earch [H]elp' })
 
 -- Neoclip (clipboard manager)
-map('n', '<C-c>', ':Telescope neoclip<CR>', { desc = 'Clipboard manager' })
+map('n', '<C-p>', ':Telescope neoclip<CR>', { desc = 'Clipboard manager' })
 
 -- Treesitter
 map('n', '<C-f>', telescope.treesitter, { desc = '[Tr]eesitter (Function, variables)' })
@@ -80,7 +80,16 @@ map('n', '<C-f>', telescope.treesitter, { desc = '[Tr]eesitter (Function, variab
 ---------------
 
 -- Toggle file tree
-map('n', '<C-t>', ':Telescope file_browser path=%:p:h<CR>', { desc = 'View [T]ree' })
+map('n', '<C-t>', ':NvimTreeToggle<CR>', { desc = 'View [T]ree' })
+
+--------------------
+-- Tmux navigator --
+--------------------
+map('n', '<M-h>', ':TmuxNavigateLeft<CR>', { desc = 'Tmux navigate left' })
+map('n', '<M-j>', ':TmuxNavigateDown<CR>', { desc = 'Tmux navigate down' })
+map('n', '<M-k>', ':TmuxNavigateUp<CR>', { desc = 'Tmux navigate up' })
+map('n', '<M-l>', ':TmuxNavigateRight<CR>', { desc = 'Tmux navigate right' })
+map('n', '<M-H>', ':TmuxNavigatePrevious<CR>', { desc = 'Tmux navigate previous' })
 
 ------------------
 -- Undo history --
