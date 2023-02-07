@@ -12,7 +12,10 @@ return {
         priority = 1000,
 		config = function()
 			local onedark = require('onedark')
-			onedark.setup { style = 'deep', transparent = true }
+			onedark.setup {
+                style = 'deep',
+                transparent = true,
+            }
 			onedark.load()
 		end
 	},
@@ -101,7 +104,7 @@ return {
                 defaults = {
                     mappings = {
                         i = {
-                            ["<C-h>"] = "which_key"
+                            ["<C-w>"] = "which_key"
                         }
                     }
                 },

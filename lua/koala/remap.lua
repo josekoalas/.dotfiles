@@ -80,7 +80,7 @@ map('n', '<C-f>', telescope.treesitter, { desc = '[Tr]eesitter (Function, variab
 ---------------
 
 -- Toggle file tree
-map('n', '<C-t>', ':Telescope file_browser<CR>', { desc = 'View [T]ree' })
+map('n', '<C-t>', ':Telescope file_browser path=%:p:h<CR>', { desc = 'View [T]ree' })
 
 ------------------
 -- Undo history --
@@ -146,7 +146,13 @@ local dap_keymap = function()
     map('n', '<leader>dapdb', pbr.clear_all_breakpoints, { desc = '[DAP] [D]elete all [B]reakpoints' })
 
     -- Continue/stop debugging (also toggle the debug interface)
-    map('n', '<C-c>', dap.continue, { desc = 'DAP [C]ontinue debug' })
+    map('n', '<C-c>', function()
+        if dap.session() then
+            dap.continue()
+        else
+            vim.cmd('normal! <C-c>')
+        end
+    end, { desc = 'DAP [C]ontinue debug' })
     map('n', '<C-q>', function()
         if dap.session() then
             dap.terminate()
@@ -167,10 +173,15 @@ local dap_keymap = function()
     map('n', '<leader>dapg', dap.goto_, { desc = '[DAP] [G]oto' })
 
     -- Start debugging c++/lua/python C-e
-    map('n', '<C-e>', function ()
+    local file_exists = function(name)
+        local f = io.open(name, "r")
+        return f ~= nil and io.close(f)
+    end
+
+    map('n', '<C-e>', function()
         if vim.bo.filetype == 'c' then
             -- If there is a makefile
-            if vim.fn.filereadable('Makefile') then
+            if file_exists(vim.fn.expand('%:p:h') .. '/makefile') then
                 dap.run(dap_conf.config.make)
             else
                 dap.run(dap_conf.config.ccpp)

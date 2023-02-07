@@ -27,3 +27,11 @@ require('lazy').setup('koala.plugins', {
 
 -- Mappings
 require('koala.remap')
+
+-- Autocommand to load a .nvim.lua config file from the current directory with exrc
+vim.cmd([[
+    augroup exrc
+        autocmd!
+        autocmd VimEnter * if &ft == 'vim' && filereadable('.nvim.lua') | source .nvim.lua | endif
+    augroup END
+]])
