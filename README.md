@@ -1,8 +1,12 @@
 # neovim 🌿
 
-my tiny begginer neovim setup
+my tiny neovim setup
+
+<img width="550" alt="neovim" src="https://user-images.githubusercontent.com/22449369/217314340-8e948cc9-386c-497e-a47c-2f8ca16254be.png">
 
 ## plugins ✨
+
+- [lazy](https://github.com/folke/lazy.nvim): plugin manager
 
 ### customization 🎨
 
@@ -59,4 +63,5 @@ my tiny begginer neovim setup
 ## how to use 🍊
 
 clone this repository in `.config/nvim` and reload your neovim configuration
+
 use `:Lazy sync` to install everything
