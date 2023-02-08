@@ -25,7 +25,7 @@ require('lazy').setup('koala.plugins', {
     change_detection = { enabled = false },
     dev = {
         path = '~/Programacion/neovim',
-        patterns = { 'copilot-cmp' },
+        patterns = {},
         fallback = false,
     }
 })
