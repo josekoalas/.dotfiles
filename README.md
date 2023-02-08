@@ -73,6 +73,7 @@ my tiny dotfile setup
 - [comment](https://github.com/numtostr/comment.nvim): toggle comment lines and blocks
 - [auto-session](https://github.com/rmagatti/auto-session): save and reload neovim sessions
 - [which-key](https://github.com/folke/which-key.nvim): show keybindings
+- [config-local](https://github.com/klen/nvim-config-local): load local configurations
 - [vim-be-good](https://github.com/theprimeagen/vim-be-good): games to learn vim
 
 ### important keybindings
