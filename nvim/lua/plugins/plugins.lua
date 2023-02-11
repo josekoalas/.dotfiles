@@ -1,192 +1,12 @@
--- Plugin setup for Lazyplugi
+-- Plugin setup for Lazy
 
 return {
-	-------------------
-	-- Customization --
-	-------------------
-
-	-- Onedark Theme
-	{
-		'navarasu/onedark.nvim',
-        lazy = false,
-        priority = 1000,
-		config = function()
-			local onedark = require('onedark')
-			onedark.setup {
-                style = 'deep',
-                transparent = true,
-            }
-			onedark.load()
-		end
-	},
-
-    -- Lualine
-    {
-        'hoob3rt/lualine.nvim',
-        dependencies = {
-            'nvim-tree/nvim-web-devicons'
-        },
-        opts = {
-            options = {
-                theme = 'onedark',
-                component_separators = '·',
-                section_separators = { left = '', right = '' },
-            },
-            sections = {
-                lualine_a = {
-                    { 'mode', separator = { left = '' }, right_padding = 2 },
-                },
-                lualine_b = {
-                    { 'filename' },
-                },
-                lualine_c = {
-                    { 'diagnostics', sources = { 'nvim_lsp' } }
-                },
-                lualine_x = {
-                    { 'encoding', colored = true },
-                    { 'filetype', colored = true },
-                },
-                lualine_y = {
-                    { 'branch', icon = '' },
-                    { 'diff', colored = true, symbols = { added = ' ', modified = '柳', removed = ' ' } },
-                },
-                lualine_z = {
-                    { 'location', separator = { right = '' } },
-                },
-            },
-            extensions = { 'nvim-tree', 'nvim-dap-ui', 'fugitive' }
-        }
-    },
-
-	---------------------------
-	-- Navigation and search --
-	---------------------------
-
-	-- Telescope (fuzzy search)
-	{
-		'nvim-telescope/telescope.nvim',
-        branch = '0.1.x',
-		dependencies = {
-			'nvim-lua/plenary.nvim',
-            { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' },
-            {
-                'acksld/nvim-neoclip.lua',
-                dependencies = {
-                    'kkharji/sqlite.lua', -- Persist history between sessions
-                },
-                opts = {
-                    history = 256,
-                    enable_persistent_history = true,
-                }
-            },
-            {
-                'rcarriga/nvim-notify',
-                opts = {
-                    background_colour = '#040c1a',
-                }
-            },
-        },
-		config = function()
-			local telescope = require('telescope')
-            telescope.setup {
-                defaults = {
-                    mappings = {
-                        i = {
-                            ["<C-w>"] = "which_key"
-                        }
-                    }
-                },
-                extensions = {
-                    fzf = {
-                        fuzzy = true,
-                        override_generic_sorter = false,
-                        override_file_sorter = true,
-                        case_mode = "smart_case",
-                    },
-                }
-            }
-            telescope.load_extension('fzf')
-			telescope.load_extension('notify')
-            telescope.load_extension('neoclip')
-        end
-	},
-
-    -- Navigate using Alt+HJKL, compatible with tmux
-	'christoomey/vim-tmux-navigator',
-
-    -- File tree
-    {
-        'nvim-tree/nvim-tree.lua',
-        dependencies = { 'nvim-tree/nvim-web-devicons' },
-        tag = 'nightly',
-        opts = {
-            update_focused_file = { enable = true },
-            git = { show_on_dirs = false },
-            view = {
-                signcolumn = "auto",
-            },
-            renderer = {
-                icons = {
-                    glyphs = {
-                        git = {
-                            unstaged = "○",
-                            untracked = "✻",
-                        }
-                    }
-                }
-            },
-            filters = { dotfiles = true },
-            actions = {
-                open_file = {
-                    quit_on_open = true,
-                },
-            }
-        }
-    },
-
-    -- Tabs
-    {
-        'romgrk/barbar.nvim',
-        dependencies = {
-            'nvim-tree/nvim-web-devicons'
-        },
-    },
-
     ----------
     -- Code --
     ----------
 
 	-- Treesitter (syntax, indent, more)
-	{
-		'nvim-treesitter/nvim-treesitter',
-		build = ':TSUpdate',
-        dependencies = {
-            'nvim-treesitter/nvim-treesitter-context'
-        },
-        opts = {
-            ensure_installed = {
-                "python",
-                "c", "cpp", "make", "cmake", "glsl",
-                "javascript", "typescript", "css", "html", "json", "yaml",
-                "latex", "bibtex", "markdown",
-                "java", "sql",
-                "lua", "vim", "help"
-            },
-            sync_install = false,
-            auto_install = true,
-            highlight = {
-                enable = true,
-                additional_vim_regex_highlighting = false,
-            },
-            indent = {
-                enable = true,
-            },
-            incremental_selection = {
-                enable = true,
-                keymaps = {},
-            },
-        },
-    },
+	--[[,
 
 	-- LSP (using lsp-zero)
 	{
@@ -197,8 +17,9 @@ return {
 			'neovim/nvim-lspconfig', -- Configures language servers
 			'williamboman/mason.nvim', -- Installs and updates LSPs
 			'williamboman/mason-lspconfig.nvim',
+            'folke/neodev.nvim', --Support signature help for lua
 
-			-- Autocompletion
+            -- Completions
             {
                 'hrsh7th/nvim-cmp', -- Autocompletes based on sources (bellow)
                 dependencies = {
@@ -229,9 +50,10 @@ return {
                             }
                         },
                         config = true,
-                        --dev = true,
                     },
                 },
+                config = function () require('koala.cmp') end,
+                event = 'InsertEnter',
             },
 
             -- Snippets
@@ -245,12 +67,9 @@ return {
                     require('luasnip.loaders.from_lua').load({paths = '~/.config/nvim/snippets'})
                 end
             },
-
-            'folke/neodev.nvim' --Support signature help for lua
         },
-        config = function()
-            require('koala.lsp').lsp_zero()
-        end
+        config = function() require('koala.lsp') end,
+        event = 'BufReadPre',
     },
 
     -- LSP for Java
@@ -279,7 +98,7 @@ return {
             }
         },
         ft = { 'markdown' },
-    },
+    },]]--
 
     -- Jupiter notebooks
     --[[ {
@@ -288,7 +107,7 @@ return {
     }, ]]
 
     -- Database queries
-    {
+    --[[{
         'tpope/vim-dadbod',
         dependencies = {
             {
@@ -342,9 +161,6 @@ return {
             { 'weissle/persistent-breakpoints.nvim' , opts = { load_breakpoints_event = { "BufReadPost" } }}, -- Save breakpoints automatically
             {
                 'nvim-telescope/telescope-dap.nvim', -- Telescope functions for DAPs
-                dependencies = {
-                    'nvim-telescope/telescope.nvim',
-                },
                 config = function()
                     require('telescope').load_extension('dap')
                 end
@@ -380,21 +196,7 @@ return {
         'mbbill/undotree',
         cmd = { 'UndotreeToggle' },
     },
-
-	-- Autosave
-	{
-		'pocco81/auto-save.nvim',
-        opts = {
-            execution_message = {
-                message = function()
-                    return ('🌿')
-                end,
-                cleaning_interval = 700,
-            },
-            debounce_delay = 3000,
-        }
-	},
-
+	
 	-- Git
 	{
         'tpope/vim-fugitive', -- Git commands in vim
@@ -439,7 +241,8 @@ return {
             vim.o.timeout = true
             vim.o.timeoutlen = 500
             require('which-key').setup()
-        end
+        end,
+        lazy = 'true'
     },
 
     -- Load local vim configurations
@@ -451,5 +254,5 @@ return {
     },
 
 	-- Vim Games
-	'theprimeagen/vim-be-good',
+	'theprimeagen/vim-be-good',]]--
 }

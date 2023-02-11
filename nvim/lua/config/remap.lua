@@ -47,56 +47,21 @@ map('n', '<BS>', '<c-^>\'”zz', { desc = 'Backspace to previous buffer' })
 -- Redo with U
 map('n', 'U', '<C-r>', { desc = 'Redo' })
 
----------------
--- Telescope --
----------------
+-- Open lazy plugin window
+map('n', '<C-l>', ':Lazy<CR>', { desc = 'Lazy plugin manager' })
 
-local telescope = require('telescope.builtin')
-
--- Search for files (or only git files)
-map('n', '<C-s>', telescope.find_files, { desc = 'Search files' })
-map('n', '<leader>sf', telescope.git_files, { desc = '[S]earch only git [F]iles' })
-
--- Live grep and search string
-map('n', '<leader>sg', telescope.live_grep, { desc = '[S]earch [G]rep' })
-map('n', '<leader>ss', telescope.grep_string, { desc = '[S]earch [S]tring' })
-
--- Keymap, command and vim options
-map('n', '<leader>sm', telescope.keymaps, { desc = '[S]earch [M]appings' })
-map('n', '<leader>sc', telescope.commands, { desc = '[S]earch [C]ommands' })
-map('n', '<leader>so', telescope.vim_options, { desc = '[S]earch [O]ptions' })
-
--- Search help
-map('n', '<leader>sh', telescope.man_pages, { desc = '[S]earch [H]elp' })
-
--- Neoclip (clipboard manager)
-map('n', '<C-p>', ':Telescope neoclip<CR>', { desc = 'Clipboard manager' })
-
--- Treesitter
-map('n', '<C-f>', telescope.treesitter, { desc = '[Tr]eesitter (Function, variables)' })
-
----------------
--- File tree --
----------------
-
--- Toggle file tree
-map('n', '<C-t>', ':NvimTreeToggle<CR>', { desc = 'View [T]ree' })
-
---------------------
--- Tmux navigator --
---------------------
-map('n', '<M-h>', ':TmuxNavigateLeft<CR>', { desc = 'Tmux navigate left' })
-map('n', '<M-j>', ':TmuxNavigateDown<CR>', { desc = 'Tmux navigate down' })
-map('n', '<M-k>', ':TmuxNavigateUp<CR>', { desc = 'Tmux navigate up' })
-map('n', '<M-l>', ':TmuxNavigateRight<CR>', { desc = 'Tmux navigate right' })
-map('n', '<M-g>', ':TmuxNavigatePrevious<CR>', { desc = 'Tmux navigate previous' })
+-- Switch between buffers
+map('n', '<M-Left>', ':bprevious<CR>', { desc = 'Next tab' })
+map('n', '<M-Right>', ':bnext<CR>', { desc = 'Previous tab' })
+map('n', '<leader>tc', ':bd<CR>', { desc = '[T]ab [C]lose' })
+map('n', '<leader>td', ':%bd|e#|bd#<CR>', { desc = '[T]ab [D]elete all' })
 
 ------------------
 -- Undo history --
 ------------------
 
 -- Show undo tree with C-u
-map('n', '<C-u>', vim.cmd.UndotreeToggle, { desc = '[U]ndo tree history' })
+--[[map('n', '<C-u>', vim.cmd.UndotreeToggle, { desc = '[U]ndo tree history' })
 
 ---------
 -- LSP --
@@ -106,29 +71,29 @@ map('n', '<C-u>', vim.cmd.UndotreeToggle, { desc = '[U]ndo tree history' })
 map('n', '<leader>d', vim.diagnostic.open_float, { desc = 'LSP [D]iagnostics' })
 map('n', '[d', vim.diagnostic.goto_next, { desc = 'LSP next [D]iagnostic' })
 map('n', ']d', vim.diagnostic.goto_prev, { desc = 'LSP previous [D]iagnostic' })
-map('n', '<leader>da', telescope.diagnostics, { desc = 'LSP [D]iagnostics [A]ll' })
+--map('n', '<leader>da', telescope.diagnostics, { desc = 'LSP [D]iagnostics [A]ll' })
 
 -- Show references
-map('n', '<C-r>', telescope.lsp_references, { desc = 'LSP [R]eferences' })
+--map('n', '<C-r>', telescope.lsp_references, { desc = 'LSP [R]eferences' })
 
 -- Hover and info
 map('n', '<C-h>', vim.lsp.buf.signature_help, { desc = 'LSP [H]over function signature help' })
 map('n', '<leader>h', vim.lsp.buf.hover, { desc = 'LSP [H]over info' })
 
 -- Incoming and outgoing calls
-map('n', '<leader>ci', telescope.lsp_incoming_calls, { desc = 'LSP [I]ncoming [C]alls' })
-map('n', '<leader>co', telescope.lsp_outgoing_calls, { desc = 'LSP [O]utgoing [C]alls' })
+--map('n', '<leader>ci', telescope.lsp_incoming_calls, { desc = 'LSP [I]ncoming [C]alls' })
+--map('n', '<leader>co', telescope.lsp_outgoing_calls, { desc = 'LSP [O]utgoing [C]alls' })
 
 -- Symbols (workspace and document) and type definitions
-map('n', '<leader>sd', telescope.lsp_document_symbols, { desc = 'LSP [S]ymbols [D]ocument' })
-map('n', '<leader>sw', telescope.lsp_workspace_symbols, { desc = 'LSP [S]ymbols [W]orkspace' })
-map('n', '<leader>st', telescope.lsp_type_definitions, { desc = 'LSP [S]ymbols [T]ype definitions' })
+--map('n', '<leader>sd', telescope.lsp_document_symbols, { desc = 'LSP [S]ymbols [D]ocument' })
+--map('n', '<leader>sw', telescope.lsp_workspace_symbols, { desc = 'LSP [S]ymbols [W]orkspace' })
+--map('n', '<leader>st', telescope.lsp_type_definitions, { desc = 'LSP [S]ymbols [T]ype definitions' })
 
 -- Rename
 map('n', '<C-n>', vim.lsp.buf.rename, { desc = 'LSP re[N]ame' })
 
 -- Go to definition with and implementation
-map('n', '<C-d>', telescope.lsp_definitions, { desc = 'LSP [D]efinition' })
+--map('n', '<C-d>', telescope.lsp_definitions, { desc = 'LSP [D]efinition' })
 map('n', '<leader>gd', vim.lsp.buf.implementation, { desc = 'LSP [D]efinition implementation' })
 
 -- Code actions with ca
@@ -236,9 +201,9 @@ map('n', '<leader>t9', '<Cmd>BufferGoto 9<CR>', { desc = '[T]ab go to [9]' })
 -- Git --
 ---------
 
-map('n', '<leader>gs', telescope.git_status, { desc = '[G]it [S]tatus' })
-map('n', '<leader>gb', telescope.git_branches, { desc = '[G]it [B]ranches' })
-map('n', '<leader>gc', telescope.git_commits, { desc = '[G]it [C]ommits' })
+--map('n', '<leader>gs', telescope.git_status, { desc = '[G]it [S]tatus' })
+--map('n', '<leader>gb', telescope.git_branches, { desc = '[G]it [B]ranches' })
+--map('n', '<leader>gc', telescope.git_commits, { desc = '[G]it [C]ommits' })
 
 require('gitsigns').on_attach = function(bufnr)
     local gs = package.loaded.gitsigns
@@ -292,4 +257,4 @@ map('n', '<leader>sq', '<Cmd>DBUIToggle<CR>', { desc = '[SQ]L Database UI Toggle
 
 return {
     dap = dap_keymap,
-}
+}]]--

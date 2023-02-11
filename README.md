@@ -29,7 +29,7 @@ my tiny dotfile setup
 #### customization
 
 - [onedark](https://github.com/navarasu/onedark.nvim): color theme
-- [lualine](https://github.com/hoob3rt/lualine.nvim): bottom bar customization
+- [lualine](https://github.com/hoob3rt/lualine.nvim): status and buffer bar customization
 - [nvim-notify](https://github.com/rcarriga/nvim-notify): beautiful notifications
 
 #### navigation and search
@@ -39,7 +39,6 @@ my tiny dotfile setup
     - [neoclip](https://github.com/acksld/nvim-neoclip.lua): clipboard manager
 - [vim-tmux-navigator](https://github.com/christoomey/vim-tmux-navigator): navigate between tmux windows
 - [nvim-tree](https://github.com/nvim-tree/nvim-tree.lue): file explorer
-- [barbar](romgrk/barbar.nvim): show opened files on tabline
 
 #### code
 

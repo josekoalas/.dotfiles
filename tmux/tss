@@ -62,6 +62,7 @@ else
             zoxide query -l -s "$p";
         done |
         sort -rnk1 |
+        uniq |
         awk '{$1=""}1' |
         awk '{$1=$1}1'
     )
