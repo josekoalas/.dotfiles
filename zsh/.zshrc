@@ -62,11 +62,11 @@ alias n="nvim"
 export EDITOR="nvim"
 
 # Tmux
-alias tss="~/Programacion/dotfiles/tmux/tss.sh"
 alias ts "tmux new -s"
 alias ta="tmux attach -t"
 alias tl="tmux list-sessions"
 alias td="tmux detach"
+bindkey -s '^S' 'tss\n'
 
 # LaTeX
 export PATH="/Library/TeX/texbin:$PATH"
