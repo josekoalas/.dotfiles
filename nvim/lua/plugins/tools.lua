@@ -19,9 +19,7 @@ return {
 		'pocco81/auto-save.nvim',
         opts = {
             execution_message = {
-                message = function()
-                    return ('🌿')
-                end,
+                message = '', 
                 cleaning_interval = 700,
             },
             debounce_delay = 3000,

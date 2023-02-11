@@ -5,20 +5,9 @@ return {
     -- Code --
     ----------
 
-	-- Treesitter (syntax, indent, more)
-	--[[,
-
+    --[[
 	-- LSP (using lsp-zero)
 	{
-		'vonheikemen/lsp-zero.nvim',
-		branch = 'v1.x',
-		dependencies = {
-			-- LSP Support
-			'neovim/nvim-lspconfig', -- Configures language servers
-			'williamboman/mason.nvim', -- Installs and updates LSPs
-			'williamboman/mason-lspconfig.nvim',
-            'folke/neodev.nvim', --Support signature help for lua
-
             -- Completions
             {
                 'hrsh7th/nvim-cmp', -- Autocompletes based on sources (bellow)
