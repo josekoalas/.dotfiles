@@ -137,6 +137,3 @@ return {
         ft = { 'gitcommit', 'octo', 'markdown' }
     }
 }
-
--- Fix for autopairs with cmp
--- cmp.event:on('confirm_done', require('nvim-autopairs.completion.cmp').on_confirm_done())
