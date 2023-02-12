@@ -11,7 +11,7 @@ require('lazy').setup('plugins', {
     defaults = { lazy = true },
     checker = { enabled = true },
     change_detection = { enabled = true, notify = false },
-    install = { colorscheme = { 'tokyonight' } },
+    install = { colorscheme = { 'kanagawa' } },
     dev = {
         path = '~/Programacion/neovim',
         patterns = {},

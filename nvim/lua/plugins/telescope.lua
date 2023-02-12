@@ -4,15 +4,6 @@
 
 return {
     {
-        'nvim-telescope/telescope-file-browser.nvim',
-        config = function()
-            require('telescope').load_extension('file_browser')
-        end,
-        keys = {
-            { '<C-t>', ':Telescope file_browser path=%:p:h<CR>', desc = 'Telescope file browser' },
-        }
-    },
-    {
 		'nvim-telescope/telescope.nvim',
         branch = '0.1.x',
 		dependencies = {
@@ -81,5 +72,35 @@ return {
             -- Notify history
             { '<leader>sn', ':Telescope notify<CR>', desc = '[S]earch [N]otifications' },
         }
+    },
+    -- Replaced by oil.nvim
+    --[[ {
+        'nvim-telescope/telescope-file-browser.nvim',
+        config = function()
+            require('telescope').load_extension('file_browser')
+        end,
+        keys = {
+            { '<C-t>', ':Telescope file_browser path=%:p:h<CR>', desc = 'Telescope file browser' },
+        }
+    } ]]--
+    {
+        'stevearc/oil.nvim',
+        cmd = 'Oil',
+        keys = { { '<C-t>', ':Oil --float<CR>', desc = 'Oil file browser' } },
+        opts = {
+            keymaps = {
+                ['<C-w>'] = 'actions.show_help',
+                ['<CR>'] = 'actions.select',
+                ['p'] = 'actions.preview',
+                ['q'] = 'actions.close',
+                ['R'] = 'actions.refresh',
+                ['-'] = 'actions.parent',
+                ['_'] = 'actions.open_cwd',
+                ['`'] = 'actions.cd',
+                ['H'] = 'actions.toggle_hidden',
+            },
+            view_options = { show_hidden = true },
+            float = { padding = 4, max_width = 160, max_height = 40 }
+        },
     }
 }

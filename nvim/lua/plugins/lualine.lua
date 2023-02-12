@@ -9,7 +9,7 @@ return {
         },
         opts = {
             options = {
-                theme = 'tokyonight',
+                theme = 'kanagawa',
                 component_separators = ' ',
                 section_separators = { left = '', right = '' },
             },

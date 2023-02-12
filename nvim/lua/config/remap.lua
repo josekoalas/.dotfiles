@@ -48,7 +48,7 @@ map('n', '<BS>', '<c-^>\'”zz', { desc = 'Backspace to previous buffer' })
 map('n', 'U', '<C-r>', { desc = 'Redo' })
 
 -- Open lazy plugin window
-map('n', '<C-l>', ':Lazy<CR>', { desc = 'Lazy plugin manager' })
+map('n', '<leader>l', ':Lazy<CR>', { desc = 'Lazy plugin manager' })
 
 -- Switch between buffers
 map('n', '<M-Left>', ':bprevious<CR>', { desc = 'Next tab' })
