@@ -57,24 +57,7 @@ return {
     -- Other --
     -----------
 
-	-- Undotree (undo history)
-	{
-        'mbbill/undotree',
-        cmd = { 'UndotreeToggle' },
-    },
 	
-	-- Git
-	{
-        'tpope/vim-fugitive', -- Git commands in vim
-        dependencies = {
-            'tpope/vim-rhubarb', -- GitHub integrations for fugitive
-        },
-        cmd = 'Git',
-    },
-    {
-        'lewis6991/gitsigns.nvim',
-        config = true
-    },
 
     -- Autosave sessions
     {
@@ -85,25 +68,12 @@ return {
         }
     },
 
-    -- Keymaps
-    {
-        'folke/which-key.nvim',
-        config = function()
-            vim.o.timeout = true
-            vim.o.timeoutlen = 500
-            require('which-key').setup()
-        end,
-        lazy = 'true'
-    },
-
+    
     -- Load local vim configurations
     {
         'klen/nvim-config-local',
         opts = {
             config_files = { '.nvim.lua' }
         }
-    },
-
-	-- Vim Games
-	'theprimeagen/vim-be-good',]]--
+    },]]--
 }

@@ -56,17 +56,10 @@ map('n', '<M-Right>', ':bnext<CR>', { desc = 'Previous tab' })
 map('n', '<leader>tc', ':bd<CR>', { desc = '[T]ab [C]lose' })
 map('n', '<leader>td', ':%bd|e#|bd#<CR>', { desc = '[T]ab [D]elete all' })
 
-------------------
--- Undo history --
-------------------
-
--- Show undo tree with C-u
---[[map('n', '<C-u>', vim.cmd.UndotreeToggle, { desc = '[U]ndo tree history' })
-
 ---------
 -- LSP --
 ---------
-
+--[[
 -- Show diagnostics with d and next/previous with ]d/[d
 map('n', '<leader>d', vim.diagnostic.open_float, { desc = 'LSP [D]iagnostics' })
 map('n', '[d', vim.diagnostic.goto_next, { desc = 'LSP next [D]iagnostic' })
@@ -103,77 +96,8 @@ map('n', '<leader>ca', vim.lsp.buf.code_action, { desc = 'LSP [C]ode [A]ctions' 
 map('n', '<leader>ff', vim.lsp.buf.format, { desc = 'LSP [F]ormat [F]ile' })
 
 
---[[
--------------
--- Tab bar --
--------------
+--[[---------
 
--- Move between tabs with Alt-Left/Right
-map('n', '<M-Left>', '<Cmd>BufferPrevious<CR>', { desc = 'Tab previous' })
-map('n', '<M-Right>', '<Cmd>BufferNext<CR>', { desc = 'Tab next' })
-
--- Close tab with tc/tco
-map('n', '<leader>tc', '<Cmd>BufferClose<CR>', { desc = '[T]ab [C]lose' })
-map('n', '<leader>tco', '<Cmd>BufferCloseAllButCurrent<CR>', { desc = '[T]ab [C]lose [O]ther' })
-
--- Move tabs with Alt-Up/Down
-map('n', '<M-Up>', '<Cmd>BufferMovePrevious<CR>', { desc = 'Tab move previous' })
-map('n', '<M-Down>', '<Cmd>BufferMoveNext<CR>', { desc = 'Tab move next' })
-
--- Go to tab with t1-9
-map('n', '<leader>t1', '<Cmd>BufferGoto 1<CR>', { desc = '[T]ab go to [1]' })
-map('n', '<leader>t2', '<Cmd>BufferGoto 2<CR>', { desc = '[T]ab go to [2]' })
-map('n', '<leader>t3', '<Cmd>BufferGoto 3<CR>', { desc = '[T]ab go to [3]' })
-map('n', '<leader>t4', '<Cmd>BufferGoto 4<CR>', { desc = '[T]ab go to [4]' })
-map('n', '<leader>t5', '<Cmd>BufferGoto 5<CR>', { desc = '[T]ab go to [5]' })
-map('n', '<leader>t6', '<Cmd>BufferGoto 6<CR>', { desc = '[T]ab go to [6]' })
-map('n', '<leader>t7', '<Cmd>BufferGoto 7<CR>', { desc = '[T]ab go to [7]' })
-map('n', '<leader>t8', '<Cmd>BufferGoto 8<CR>', { desc = '[T]ab go to [8]' })
-map('n', '<leader>t9', '<Cmd>BufferGoto 9<CR>', { desc = '[T]ab go to [9]' })
-
----------
--- Git --
----------
-
---map('n', '<leader>gs', telescope.git_status, { desc = '[G]it [S]tatus' })
---map('n', '<leader>gb', telescope.git_branches, { desc = '[G]it [B]ranches' })
---map('n', '<leader>gc', telescope.git_commits, { desc = '[G]it [C]ommits' })
-
-require('gitsigns').on_attach = function(bufnr)
-    local gs = package.loaded.gitsigns
-
-    local function gmap(mode, l, r, opts)
-        opts = opts or {}
-        opts.buffer = bufnr
-        vim.keymap.set(mode, l, r, opts)
-    end
-
-    -- Navigation
-    gmap('n', ']c', function()
-        if vim.wo.diff then return ']c' end
-        vim.schedule(function() gs.next_hunk() end)
-        return '<Ignore>'
-    end, { desc = 'Next git change' })
-
-    gmap('n', '[c', function()
-        if vim.wo.diff then return '[c' end
-        vim.schedule(function() gs.prev_hunk() end)
-        return '<Ignore>'
-    end, { desc = 'Previous git change' })
-
-    -- Toggle deleted lines
-    gmap('n', '<leader>gt', gs.toggle_deleted, { desc = '[G]it [T]oggle deleted' })
-
-    -- Reset or stage hunk
-    gmap({'n', 'v'}, '<leader>gr', ':Gitsigns reset_hunk<CR>', { desc = '[G]it [R]eset hunk' })
-    gmap({'n', 'v'}, '<leader>ga', ':Gitsigns stage_hunk<CR>', { desc = '[G]it [A]dd hunk' })
-
-    -- Select the entire hunk
-    gmap({'o', 'x'}, 'ih', gs.select_hunk, { desc = '[G]it select hunk' })
-
-    -- View the changes
-    gmap('n', '<leader>gv', gs.preview_hunk_inline, { desc = '[G]it [V]iew hunk' })
-end
 
 --------------
 -- Markdown --

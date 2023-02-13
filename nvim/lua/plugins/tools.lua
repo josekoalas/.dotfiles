@@ -10,7 +10,7 @@ return {
             { '<M-j>', ':TmuxNavigateDown<CR>', desc = 'Tmux navigate down' },
             { '<M-k>', ':TmuxNavigateUp<CR>', desc = 'Tmux navigate up' },
             { '<M-l>', ':TmuxNavigateRight<CR>', desc = 'Tmux navigate right' },
-            { '<M-g>', ':TmuxNavigatePrevious<CR>', desc = 'Tmux navigate previous' },       
+            { '<M-g>', ':TmuxNavigatePrevious<CR>', desc = 'Tmux navigate previous' },
         }
     },
 
@@ -19,7 +19,7 @@ return {
 		'pocco81/auto-save.nvim',
         opts = {
             execution_message = {
-                message = '', 
+                message = '',
                 cleaning_interval = 700,
             },
             debounce_delay = 3000,
@@ -39,5 +39,11 @@ return {
             enable_persistent_history = true,
         },
         event = 'VeryLazy'
+    },
+
+    -- Undotree (undo history)
+	{
+        'mbbill/undotree',
+        keys = { { '<C-u>', ':UndotreeToggle<CR>', desc = 'Toggle [U]ndo Tree' } }
     },
 }

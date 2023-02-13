@@ -43,35 +43,44 @@ return {
             t.load_extension('neoclip') -- Already loaded on VeryLazy
             t.load_extension('notify') -- Already loaded on VeryLazy
         end,
-        keys = {
-            -- Search for files (or only git files)
-            { '<C-s>', function() require('telescope.builtin').find_files() end, desc = 'Search files' },
-            { '<leader>sf', function() require('telescope.builtin').git_files() end, desc = '[S]earch only git [F]iles' },
+        keys = function()
+            local telescope = require('telescope.builtin')
 
-            -- Live grep and search string
-            { '<leader>sg', function() require('telescope.builtin').live_grep() end, desc = '[S]earch [G]rep' },
-            { '<leader>ss', function() require('telescope.builtin').grep_string() end, desc = '[S]earch [S]tring' },
+            return {
+                -- Search for files (or only git files)
+                { '<C-s>', telescope.find_files, desc = 'Search files' },
+                { '<leader>sf', telescope.git_files, desc = '[S]earch only git [F]iles' },
 
-            -- Keymap, command and vim options
-            { '<leader>sm', function() require('telescope.builtin').keymaps() end, desc = '[S]earch [M]appings' },
-            { '<leader>sc', function() require('telescope.builtin').commands() end, desc = '[S]earch [C]ommands' },
-            { '<leader>so', function() require('telescope.builtin').vim_options() end, desc = '[S]earch [O]ptions' },
+                -- Live grep and search string
+                { '<leader>sg', telescope.live_grep, desc = '[S]earch [G]rep' },
+                { '<leader>ss', telescope.grep_string, desc = '[S]earch [S]tring' },
 
-            -- Buffers
-            { '<leader>sb', function() require('telescope.builtin').buffers() end, desc = '[S]earch [B]uffers' },
+                -- Keymap, command and vim options
+                { '<leader>sm', telescope.keymaps, desc = '[S]earch [M]appings' },
+                { '<leader>sc', telescope.commands, desc = '[S]earch [C]ommands' },
+                { '<leader>so', telescope.vim_options, desc = '[S]earch [O]ptions' },
 
-            -- Search help
-            { '<leader>sh', function() require('telescope.builtin').man_pages() end, desc = '[S]earch [H]elp' },
+                -- Buffers
+                { '<leader>sb', telescope.buffers, desc = '[S]earch [B]uffers' },
 
-            -- Treesitter
-            { '<C-f>', function() require('telescope.builtin').treesitter() end, desc = '[Tr]eesitter (Function variables)' },
+                -- Search help
+                { '<leader>sh', telescope.man_pages, desc = '[S]earch [H]elp' },
 
-            -- Neoclip clipboard (add load extension)
-            { '<leader>sp', ':Telescope neoclip<CR>', desc = '[S]earch [P]aste clipboard history' },
+                -- Treesitter
+                { '<C-f>', telescope.treesitter, desc = '[Tr]eesitter (Function variables)' },
 
-            -- Notify history
-            { '<leader>sn', ':Telescope notify<CR>', desc = '[S]earch [N]otifications' },
-        }
+                -- Neoclip clipboard (add load extension)
+                { '<leader>sp', ':Telescope neoclip<CR>', desc = '[S]earch [P]aste clipboard history' },
+
+                -- Notify history
+                { '<leader>sn', ':Telescope notify<CR>', desc = '[S]earch [N]otifications' },
+
+                -- Git
+                { '<leader>gs', telescope.git_status, desc = '[G]it [S]tatus' },
+                { '<leader>gb', telescope.git_branches, desc = '[G]it [B]ranches' },
+                { '<leader>gc', telescope.git_commits, desc = '[G]it [C]ommits' },
+            }
+        end
     },
     -- Replaced by oil.nvim
     --[[ {
