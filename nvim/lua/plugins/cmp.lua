@@ -26,23 +26,37 @@ return {
         },
         opts = function()
             local cmp = require('cmp')
+            local luasnip = require('luasnip')
             return {
                 completion = {
                     completeopt = 'menu,menuone,noinsert',
                 },
                 snippet = {
                     expand = function(args)
-                        require('luasnip').lsp_expand(args.body)
+                        luasnip.lsp_expand(args.body)
                     end,
                 },
                 mapping = cmp.mapping.preset.insert({
                     ['<Tab>'] = vim.schedule_wrap(function(fallback)
-                        if cmp.visible() and has_words_before() then
-                            cmp.select_next_item({ behavior = cmp.SelectBehavior.Select })
+                        if cmp.visible() then
+                            cmp.select_next_item()
+                        elseif luasnip.expand_or_locally_jumpable() then
+                            luasnip.expand_or_jump()
+                        elseif has_words_before() then
+                            cmp.complete()
                         else
                             fallback()
                         end
-                    end),
+                    end, { 'i', 's' }),
+                    ["<S-Tab>"] = vim.schedule_wrap(function(fallback)
+                        if cmp.visible() then
+                            cmp.select_prev_item()
+                        elseif luasnip.jumpable(-1) then
+                            luasnip.jump(-1)
+                        else
+                            fallback()
+                        end
+                    end, { 'i', 's' }),
                     ['<S-CR>'] = vim.schedule_wrap(function(fallback) -- don't select anything
                         if cmp.visible() then
                             cmp.close()

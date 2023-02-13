@@ -102,74 +102,8 @@ map('n', '<leader>ca', vim.lsp.buf.code_action, { desc = 'LSP [C]ode [A]ctions' 
 -- Format buffer
 map('n', '<leader>ff', vim.lsp.buf.format, { desc = 'LSP [F]ormat [F]ile' })
 
------------
--- Debug --
------------
 
-local dap_keymap = function()
-    local dap = require('dap')
-    local dapui = require('dapui')
-    local pbr = require('persistent-breakpoints.api')
-    local dap_conf = require('koala.dap')
-
-    -- Toggle breakpoints and conditional breakpoints
-    map('n', '<C-b>', pbr.toggle_breakpoint, { desc = 'DAP Toggle [B]reakpoint' })
-    map('n', '<leader>dapcb', pbr.set_conditional_breakpoint, { desc = '[DAP] [C]onditional [B]reakpoint' })
-
-    -- Delete all breakpoints with
-    map('n', '<leader>dapdb', pbr.clear_all_breakpoints, { desc = '[DAP] [D]elete all [B]reakpoints' })
-
-    -- Continue/stop debugging (also toggle the debug interface)
-    map('n', '<C-c>', function()
-        if dap.session() then
-            dap.continue()
-        else
-            vim.cmd('normal! <C-c>')
-        end
-    end, { desc = 'DAP [C]ontinue debug' })
-    map('n', '<C-q>', function()
-        if dap.session() then
-            dap.terminate()
-        end
-        dapui.toggle()
-    end, { desc = 'DAP [Q]uit debug (and toggle UI)' })
-    map('n', '<leader>dapt', dapui.toggle, { desc = 'DAP Toggle debug UI' })
-
-    -- Step into/out/over with C-i/o/u
-    map('n', '<C-i>', dap.step_into, { desc = 'DAP [I]n debug step' })
-    map('n', '<leader>dapo', dap.step_out, { desc = '[DAP] [O]ut debug step' })
-    map('n', '<leader>dapu', dap.step_over, { desc = '[DAP] [U]p debug step (over)' })
-
-    -- Run to cursor
-    map('n', '<leader>dapc', dap.run_to_cursor, { desc = '[DAP] run to [C]ursor' })
-
-    -- Goto
-    map('n', '<leader>dapg', dap.goto_, { desc = '[DAP] [G]oto' })
-
-    -- Start debugging c++/lua/python C-e
-    local file_exists = function(name)
-        local f = io.open(name, "r")
-        return f ~= nil and io.close(f)
-    end
-
-    map('n', '<C-e>', function()
-        if vim.bo.filetype == 'c' then
-            -- If there is a makefile
-            if file_exists(vim.fn.expand('%:p:h') .. '/makefile') then
-                dap.run(dap_conf.config.make)
-            else
-                dap.run(dap_conf.config.ccpp)
-            end
-        elseif vim.bo.filetype == 'cpp' then
-            dap.run(dap_conf.config.ccpp)
-        elseif vim.bo.filetype == 'python' then
-            dap.run(dap_conf.config.python)
-        elseif vim.bo.filetype == 'java' then
-            dap.run(dap_conf.config.java)
-        end
-    end, { desc = 'Start debugging' })
-end
-
+--[[
 -------------
 -- Tab bar --
 -------------
@@ -255,6 +189,4 @@ map('n', '<leader>sq', '<Cmd>DBUIToggle<CR>', { desc = '[SQ]L Database UI Toggle
 
 ---
 
-return {
-    dap = dap_keymap,
-}]]--
+]]--
