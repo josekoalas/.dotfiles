@@ -13,6 +13,15 @@ return {
         event = 'VeryLazy'
     },
 
+    -- Load local neovim configuration
+    {
+        'klen/nvim-config-local',
+        opts = {
+            config_files = { '.nvim.lua' }
+        },
+        event = 'VimEnter'
+    },
+
     -- Vim games
     {
         'theprimeagen/vim-be-good',

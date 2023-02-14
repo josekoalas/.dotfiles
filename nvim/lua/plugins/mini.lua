@@ -48,14 +48,5 @@ return {
             require('mini.trailspace').setup()
         end,
         keys = { { 'tt', function() require('mini.trailspace').trim() end, desc = '[T]rim [T]railspace' } }
-    },
-    {
-        'echasnovski/mini.sessions',
-        config = function()
-            require('mini.sessions').setup{
-                autoread = true
-            }
-        end,
-        lazy = false
     }
 }

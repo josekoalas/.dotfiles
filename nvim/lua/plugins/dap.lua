@@ -17,6 +17,16 @@ local cppdbg_adapter = { -- Can use GDB, no console
     id = 'cppdbg'
 }
 
+local codelldb_port = 16800
+local codelldb_adapter = {
+    type = 'server',
+    port = codelldb_port,
+    executable = {
+        command = vim.fn.expand('$HOME') .. '/.local/share/nvim/codelldb/extension/adapter/codelldb',
+        args = {"--port", codelldb_port},
+    }
+}
+
 -- Debug configurations
 
 local python_config = {
@@ -28,43 +38,43 @@ local python_config = {
 }
 
 local c_cpp_config = {
-    type = 'lldb',
+    type = 'codelldb',
     request = 'launch',
     name = 'Debug C/C++',
     program = './${relativeFileDirname}/bin/${fileBasenameNoExtension}',
     cwd = vim.fn.getcwd(),
     stopOnEntry = false,
     preLaunchTask = 'gcc build',
-    env = function()
-        local variables = {}
-        for k, v in pairs(vim.fn.environ()) do
-            table.insert(variables, string.format('%s=%s', k, v))
-        end
-        return variables
-    end,
+    --env = function()
+    --    local variables = {}
+    --    for k, v in pairs(vim.fn.environ()) do
+    --        table.insert(variables, string.format('%s=%s', k, v))
+    --    end
+    --    return variables
+    --end,
     --MIMode = 'lldb', (for cppdbg)
-    --terminal = 'integrated', (for codelldb)
-    runInTerminal = true,
+    terminal = 'integrated',
+    --runInTerminal = true, (for lldb-vscode)
 }
 
 local make_config = {
-    type = 'lldb',
+    type = 'codelldb',
     request = 'launch',
     name = 'Debug C/C++ (make)',
     program = './${relativeFileDirname}/bin/main',
     cwd = vim.fn.getcwd(),
     stopOnEntry = false,
     preLaunchTask = 'make build',
-    env = function()
-        local variables = {}
-        for k, v in pairs(vim.fn.environ()) do
-            table.insert(variables, string.format('%s=%s', k, v))
-        end
-        return variables
-    end,
+    --env = function()
+    --    local variables = {}
+    --    for k, v in pairs(vim.fn.environ()) do
+    --        table.insert(variables, string.format('%s=%s', k, v))
+    --    end
+    --    return variables
+    --end,
     --MIMode = 'lldb', (for cppdbg)
-    --terminal = 'integrated', (for codelldb)
-    runInTerminal = true,
+    terminal = 'integrated',
+    --runInTerminal = true, (for lldb-vscode)
 }
 
 local java_config = {
@@ -161,7 +171,8 @@ return {
 
             dap.adapters = {
                 lldb = lldb_adapter,
-                cppdbg = cppdbg_adapter
+                cppdbg = cppdbg_adapter,
+                codelldb = codelldb_adapter,
             }
 
             require('dap-python').setup('~/.virtualenvs/debugpy/bin/python')

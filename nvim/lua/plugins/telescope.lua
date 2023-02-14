@@ -79,6 +79,20 @@ return {
                 { '<leader>gs', telescope.git_status, desc = '[G]it [S]tatus' },
                 { '<leader>gb', telescope.git_branches, desc = '[G]it [B]ranches' },
                 { '<leader>gc', telescope.git_commits, desc = '[G]it [C]ommits' },
+
+                -- Diagnostics
+                { '<leader>sd', telescope.diagnostics, desc = '[S]earch [D]iagnostics' },
+
+                -- LSP
+                { 'gd', telescope.lsp_definitions, desc = 'LSP [D]efinition' },
+                { 'gr', telescope.lsp_references, desc = 'LSP [R]eferences' },
+                { 'gt', telescope.lsp_type_definitions, desc = 'LSP [T]ype definitions' },
+
+                { '<leader>ci', telescope.lsp_incoming_calls, desc = 'LSP [I]ncoming [C]alls' },
+                { '<leader>co', telescope.lsp_outgoing_calls, desc = 'LSP [O]utgoing [C]alls' },
+
+                { '<leader>sy', telescope.lsp_document_symbols, desc = 'LSP [S]ymbols [D]ocument' },
+                { '<leader>sw', telescope.lsp_workspace_symbols, desc = 'LSP [S]ymbols [W]orkspace' },
             }
         end
     },

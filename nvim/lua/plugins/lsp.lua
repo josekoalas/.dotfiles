@@ -7,14 +7,6 @@
 
 return {
     {
-        'folke/neodev.nvim',
-        opts = {
-            experimental = {
-                pathStrict = true,
-            }
-        },
-    },
-    {
         'neovim/nvim-lspconfig',
         dependencies = {
             {
@@ -119,5 +111,34 @@ return {
             mlc.setup_handlers({ setup })
         end,
         event = { 'BufReadPre', 'BufNewFile' },
+        keys = {
+            { '[d', vim.diagnostic.goto_next, desc = 'LSP next [D]iagnostic' },
+            { ']d', vim.diagnostic.goto_prev, desc = 'LSP previous [D]iagnostic' },
+
+            { '<leader>d', vim.diagnostic.open_float, desc = 'LSP show line [D]iagnostics' },
+            { '<leader>h', vim.lsp.buf.hover, desc = 'LSP [H]over info' },
+            { '<leader>lsp', ':LspInfo<CR>', desc = '[LSP] Info' },
+
+            { 'gD', vim.lsp.buf.declaration, desc = 'LSP [G]o to [D]eclaration' },
+            { 'gI', vim.lsp.buf.implementation, desc = 'LSP [G]o to [I]mplementation' },
+            { 'gh', vim.lsp.buf.signature_help, desc = 'LSP [G]et [H]over signature help' },
+            { mode = 'i', '<C-h>', vim.lsp.buf.signature_help, desc = 'LSP [G]et [H]over signature help' },
+
+            { '<C-n>', vim.lsp.buf.rename, desc = 'LSP re[N]ame' },
+            { '<leader>ca', vim.lsp.buf.code_action, desc = 'LSP [C]ode [A]ctions' },
+            { '<leader>ff', vim.lsp.buf.format, desc = 'LSP [F]ormat [F]ile' },
+        }
     },
+    {
+        'folke/neodev.nvim',
+        opts = {
+            experimental = {
+                pathStrict = true,
+            }
+        },
+    },
+    {
+        'mfussenegger/nvim-jdtls',
+        ft = 'java'
+    }
 }

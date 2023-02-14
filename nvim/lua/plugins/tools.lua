@@ -27,6 +27,15 @@ return {
         event = 'InsertLeavePre'
 	},
 
+    -- Autosave sessions
+    {
+        'rmagatti/auto-session',
+        opts = {
+            log_level = 'error',
+            auto_session_suppress_dirs = { '~/', '~/Downloads', '/'}
+        },
+        event = 'BufWinEnter'
+    },
 
     -- Neoclip: Save a clipboard history of yanks
     {
@@ -38,6 +47,7 @@ return {
             history = 256,
             enable_persistent_history = true,
         },
+        keys = { { '<C-p>', function() require("neoclip").toggle() end, desc = 'Toggle Copy-[P]aste History' } },
         event = 'VeryLazy'
     },
 
