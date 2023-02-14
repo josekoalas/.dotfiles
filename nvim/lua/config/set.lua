@@ -36,10 +36,6 @@ vim.o.signcolumn = 'yes'
 -- Fast updates
 vim.o.updatetime = 50
 
--- Disable netrw (to avoid conflicts with nvim-tree.lua)
-vim.g.loaded_netrw = 1
-vim.g.loaded_netrwPlugin = 1
-
 -- Set termgui colors
 vim.o.termguicolors = true
 

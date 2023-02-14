@@ -44,7 +44,8 @@ return {
             t.load_extension('notify') -- Already loaded on VeryLazy
         end,
         keys = function()
-            local telescope = require('telescope.builtin')
+            local has_telescope, telescope = pcall(require, 'telescope.builtin')
+            if (not has_telescope) then return {} end
 
             return {
                 -- Search for files (or only git files)

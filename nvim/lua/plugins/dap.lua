@@ -111,7 +111,8 @@ return {
             load_breakpoints_event = { "BufReadPost" }
         },
         keys = function()
-            local pbr = require('persistent-breakpoints.api')
+            local has_pbr, pbr = pcall(require, 'persistent-breakpoints.api')
+            if (not has_pbr) then return {} end
             return {
                 { '<C-b>', pbr.toggle_breakpoint, desc = 'DAP Toggle [B]reakpoint' },
                 { '<leader>cb', pbr.set_conditional_breakpoint, desc = 'DAP [C]onditional [B]reakpoint' },
@@ -183,8 +184,9 @@ return {
             vim.fn.sign_define('DapBreakpointCondition', { text = '○' })
         end,
         keys = function()
-            local dap = require('dap')
-            local dapui = require('dapui')
+            local has_dap, dap = pcall(require, 'dap')
+            local has_dapui, dapui = pcall(require, 'dapui')
+            if (not has_dap or not has_dapui) then return {} end
 
             return {
                 { '<F10>', dap.continue, desc = 'DAP continue' },
