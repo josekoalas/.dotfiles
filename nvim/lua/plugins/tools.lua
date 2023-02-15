@@ -2,15 +2,15 @@
 -- Assorted helper plugins
 
 return {
-    -- Tmux navigator: Navigate vim/tmux panes using Alt+HJKL
+    -- Tmux navigator: Navigate vim/tmux panes using C+HJKL
 	{
         'christoomey/vim-tmux-navigator',
         keys = {
-            { '<M-h>', ':TmuxNavigateLeft<CR>', desc = 'Tmux navigate left' },
-            { '<M-j>', ':TmuxNavigateDown<CR>', desc = 'Tmux navigate down' },
-            { '<M-k>', ':TmuxNavigateUp<CR>', desc = 'Tmux navigate up' },
-            { '<M-l>', ':TmuxNavigateRight<CR>', desc = 'Tmux navigate right' },
-            { '<M-g>', ':TmuxNavigatePrevious<CR>', desc = 'Tmux navigate previous' },
+            { '<C-h>', ':TmuxNavigateLeft<CR>', desc = 'Tmux navigate left' },
+            { '<C-j>', ':TmuxNavigateDown<CR>', desc = 'Tmux navigate down' },
+            { '<C-k>', ':TmuxNavigateUp<CR>', desc = 'Tmux navigate up' },
+            { '<C-l>', ':TmuxNavigateRight<CR>', desc = 'Tmux navigate right' },
+            { '<C-g>', ':TmuxNavigatePrevious<CR>', desc = 'Tmux navigate previous' },
         }
     },
 

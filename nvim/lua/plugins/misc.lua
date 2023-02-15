@@ -22,6 +22,16 @@ return {
         event = 'VimEnter'
     },
 
+    -- Load GLSL viewer
+    {
+        'timtro/glslview-nvim',
+        opts = {
+            exe_path = '/usr/local/bin/glslViewer',
+            arguments = { '-l', '-w', '128', '-h', '256' },
+        },
+        ft = 'glsl'
+    },
+
     -- Vim games
     {
         'theprimeagen/vim-be-good',

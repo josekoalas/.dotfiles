@@ -65,22 +65,16 @@ local make_config = {
     cwd = vim.fn.getcwd(),
     stopOnEntry = false,
     preLaunchTask = 'make build',
-    --env = function()
-    --    local variables = {}
-    --    for k, v in pairs(vim.fn.environ()) do
-    --        table.insert(variables, string.format('%s=%s', k, v))
-    --    end
-    --    return variables
-    --end,
-    --MIMode = 'lldb', (for cppdbg)
-    terminal = 'integrated',
-    --runInTerminal = true, (for lldb-vscode)
+    terminal = 'integrated'
 }
 
 local java_config = {
     type = 'java',
     request = 'launch',
     name = 'Debug Java',
+    javaExec = '/usr/local/opt/openjdk@19/bin/java',
+    cwd = '${workspaceFolder}',
+    console = 'integratedTerminal',
     preLaunchTask = 'gradle build'
 }
 
@@ -208,7 +202,15 @@ return {
                     elseif vim.bo.filetype == 'python' then
                         dap.run(python_config)
                     elseif vim.bo.filetype == 'java' then
-                        dap.run(java_config)
+                        -- If it is an ant project
+                        if file_exists(vim.fn.getcwd() .. '/build.xml') then
+                            -- Compile and run using shell command
+                            vim.fn.system('ant compile')
+                            vim.fn.system('ant run')
+                        else -- Try to use dap
+                            require('jdtls.dap').setup_dap_main_class_configs()
+                            dap.run(java_config)
+                        end
                     end
                 end, desc = 'Start debugging' }
             }

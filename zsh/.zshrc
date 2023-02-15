@@ -68,6 +68,10 @@ alias tl="tmux list-sessions"
 alias td="tmux detach"
 bindkey -s '^S' 'tss\n'
 
+# TLDR man pages
+alias tldrf='tldr --list | fzf-tmux -p 80%,80% --height 100% --preview "tldr {1} --color=always" --preview-window=right,70% | xargs tldr'
+bindkey -s '^T' 'tldrf\n'
+
 # LaTeX
 export PATH="/Library/TeX/texbin:$PATH"
 

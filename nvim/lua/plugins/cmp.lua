@@ -23,10 +23,14 @@ return {
             'hrsh7th/cmp-buffer',
             'hrsh7th/cmp-path',
             'saadparwaiz1/cmp_luasnip',
+            'onsails/lspkind.nvim'
         },
         opts = function()
             local cmp = require('cmp')
             local luasnip = require('luasnip')
+
+            vim.api.nvim_set_hl(0, 'CmpItemKindCopilot', { fg = '#26C281' })
+
             return {
                 completion = {
                     completeopt = 'menu,menuone,noinsert',
@@ -48,7 +52,7 @@ return {
                             fallback()
                         end
                     end, { 'i', 's' }),
-                    ["<S-Tab>"] = vim.schedule_wrap(function(fallback)
+                    ['<S-Tab>'] = vim.schedule_wrap(function(fallback)
                         if cmp.visible() then
                             cmp.select_prev_item()
                         elseif luasnip.jumpable(-1) then
@@ -76,6 +80,18 @@ return {
                     { name = 'buffer', max_item_count = 5 },
                     { name = 'path' },
                 }),
+                formatting = {
+                    format = require('lspkind').cmp_format({
+                        symbol_map = { Copilot = '' },
+                        mode = 'symbol',
+                        maxwidth = 32,
+                        ellipsis_char = '…',
+
+                        before = function(_, vim_item)
+                            return vim_item
+                        end,
+                    })
+                },
                 window = {
                     --completion = {},
                     --documentation = { border = 'rounded' },
