@@ -37,20 +37,6 @@ return {
         event = 'BufWinEnter'
     },
 
-    -- Neoclip: Save a clipboard history of yanks
-    {
-        'acksld/nvim-neoclip.lua',
-        dependencies = {
-            'kkharji/sqlite.lua', -- Persist history between sessions
-        },
-        opts = {
-            history = 256,
-            enable_persistent_history = true,
-        },
-        keys = { { '<C-p>', function() require("neoclip").toggle() end, desc = 'Toggle Copy-[P]aste History' } },
-        event = 'VeryLazy'
-    },
-
     -- Undotree (undo history)
 	{
         'mbbill/undotree',

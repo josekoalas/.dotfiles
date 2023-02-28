@@ -12,12 +12,6 @@ return {
         enable = false
     },
     {
-        'ellisonleao/glow.nvim', -- Preview right in CMD (not working right now)
-        config = true,
-        cmd = 'Glow',
-        enable = false
-    },
-    {
         'jakewvincent/mkdnflow.nvim',
         opts = {
             mappings = {
@@ -29,5 +23,23 @@ return {
             }
         },
         ft = 'markdown',
+    },
+    {
+        'jbyuki/nabla.nvim',
+        dependencies = {
+            'nvim-treesitter/nvim-treesitter'
+        },
+        config = function()
+            require('nabla').enable_virt()
+        end,
+        keys = function()
+            local has_nabla, nabla = pcall(require, 'nabla')
+            if not has_nabla then return {} end
+
+            return {
+                { '<leader>np', nabla.popup, desc = '[N]abla [P]review (math)' }
+            }
+        end,
+        ft = { 'markdown', 'latex' }
     }
 }

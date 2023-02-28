@@ -10,6 +10,7 @@ return {
                 background_colour = '#040c1a'
             }
             vim.notify = require('notify').notify
+            require('telescope').load_extension('notify')
         end,
         event = 'VeryLazy'
     }
