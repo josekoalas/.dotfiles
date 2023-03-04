@@ -59,7 +59,7 @@ return {
 
             return {
                 -- Search for files (or only git files)
-                { '<C-s>', telescope.find_files, desc = 'Search files' },
+                { '<C-s>', function() telescope.find_files{ follow = true, hidden = true } end, desc = 'Search files' },
                 { '<leader>sf', telescope.git_files, desc = '[S]earch only git [F]iles' },
 
                 -- Live grep and search string
