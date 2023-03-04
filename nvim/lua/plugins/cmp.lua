@@ -41,10 +41,10 @@ return {
                     end,
                 },
                 mapping = cmp.mapping.preset.insert({
-                    ['<Tab>'] = vim.schedule_wrap(function(fallback)
+                    ['<Tab>'] = cmp.mapping(function(fallback)
                         if cmp.visible() then
-                            cmp.select_next_item()
-                        elseif luasnip.expand_or_locally_jumpable() then
+                            cmp.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = false })
+                        elseif luasnip.expand_or_jumpable() then
                             luasnip.expand_or_jump()
                         elseif has_words_before() then
                             cmp.complete()
@@ -52,33 +52,26 @@ return {
                             fallback()
                         end
                     end, { 'i', 's' }),
-                    ['<S-Tab>'] = vim.schedule_wrap(function(fallback)
+                    ['<S-Tab>'] = cmp.mapping(function(fallback)
                         if cmp.visible() then
-                            cmp.select_prev_item()
+                            cmp.abort()
                         elseif luasnip.jumpable(-1) then
                             luasnip.jump(-1)
                         else
                             fallback()
                         end
                     end, { 'i', 's' }),
-                    ['<S-CR>'] = vim.schedule_wrap(function(fallback) -- don't select anything
-                        if cmp.visible() then
-                            cmp.close()
-                        end
-                        fallback()
-                    end),
-                    ['<CR>'] = cmp.mapping.confirm({ -- copilot-cmp
-                        behavior = cmp.ConfirmBehavior.Replace,
-                        select = false,
-                    }),
+                    ['<S-CR>'] = cmp.mapping(function(_)
+                        cmp.complete()
+                    end, { 'i', 's' })
                 }),
                 sources = cmp.config.sources({
                     { name = 'copilot', max_item_count = 3 },
                     { name = 'nvim_lsp' },
                     { name = 'nvim_lsp_signature_help' },
                     { name = 'luasnip' },
-                    { name = 'buffer', max_item_count = 5 },
-                    { name = 'path' },
+                    { name = 'buffer', max_item_count = 3 },
+                    { name = 'path', max_item_count = 3 },
                 }),
                 formatting = {
                     format = require('lspkind').cmp_format({
@@ -142,6 +135,7 @@ return {
                     method = 'getCompletionsCycling',
                 },
                 suggestion = { enabled = false },
+                panel = { enabled = false },
                 server_opts_overrides = {
                     settings = {
                         advanced = {
@@ -149,11 +143,11 @@ return {
                         }
                     }
                 },
-                filetypes = { markdown = true }
-            }
+                filetypes = { markdown = true },
+            },
         },
         config = true,
-        event = 'InsertEnter'
+        event = 'InsertEnter',
     },
     {
         'kdheepak/cmp-latex-symbols',
