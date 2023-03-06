@@ -97,7 +97,7 @@ return {
                 'javabuild'
             },
         },
-        ft = filetypes,
+        ft = filetypes
     },
     {
         'weissle/persistent-breakpoints.nvim', -- Save breakpoints automatically
@@ -191,7 +191,7 @@ return {
                     if dap.session() then dap.terminate() end
                     dapui.toggle()
                 end, desc = 'DAP [Q]uit debug (and toggle UI)' },
-                { '<C-e>', function()
+                { '<C-r>', function()
                     if vim.bo.filetype == 'c' or vim.bo.filetype == 'cpp' then
                         -- If there is a makefile
                         if file_exists(vim.fn.expand('%:p:h') .. '/makefile') then
@@ -212,7 +212,7 @@ return {
                             dap.run(java_config)
                         end
                     end
-                end, desc = 'Start debugging' }
+                end, desc = '[R]un Debug' }
             }
         end,
         ft = filetypes,

@@ -22,16 +22,6 @@ return {
         event = 'VimEnter'
     },
 
-    -- Load GLSL viewer
-    {
-        'timtro/glslview-nvim',
-        opts = {
-            exe_path = '/usr/local/bin/glslViewer',
-            arguments = { '-l', '-w', '128', '-h', '256' },
-        },
-        ft = 'glsl'
-    },
-
     -- Collaborative neovim 
     {
         'jbyuki/instant.nvim',
@@ -44,7 +34,8 @@ return {
             { '<leader>iT', ':InstantStopServer<CR>', desc = 'Stop Sharing Server' },
             { '<leader>it', ':InstantStop<CR>', desc = 'Stop Sharing Session' },
             { '<leader>ic', ':InstantStatus<CR>', desc = 'Sharing Session Current Status' },
-        }
+        },
+        cmd = { 'InstantJoinSingle' }
     },
 
     -- Vim games

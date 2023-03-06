@@ -3,8 +3,12 @@
 set -e
 
 osascript - <<EOF
-tell application "iTerm2"
-    activate
-    create window with default profile
-end tell
+if application "iTerm" is not running then
+    activate application "iTerm"
+else
+    tell application "iTerm"
+        create window with default profile
+        activate
+    end tell
+end if
 EOF
