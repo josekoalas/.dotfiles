@@ -40,6 +40,6 @@ return {
     -- Undotree (undo history)
 	{
         'mbbill/undotree',
-        keys = { { '<C-u>', ':UndotreeToggle<CR>', desc = 'Toggle [U]ndo Tree' } }
+        keys = { { '<leader>u', ':UndotreeToggle<CR>', desc = 'Toggle [U]ndo Tree' } }
     },
 }

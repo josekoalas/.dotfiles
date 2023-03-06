@@ -46,8 +46,6 @@ return {
                             cmp.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = false })
                         elseif luasnip.expand_or_jumpable() then
                             luasnip.expand_or_jump()
-                        elseif has_words_before() then
-                            cmp.complete()
                         else
                             fallback()
                         end
@@ -69,7 +67,7 @@ return {
                     { name = 'copilot', max_item_count = 3 },
                     { name = 'nvim_lsp' },
                     { name = 'nvim_lsp_signature_help' },
-                    { name = 'luasnip' },
+                    { name = 'luasnip', max_item_count = 5 },
                     { name = 'buffer', max_item_count = 3 },
                     { name = 'path', max_item_count = 3 },
                 }),

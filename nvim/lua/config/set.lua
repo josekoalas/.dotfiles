@@ -42,6 +42,9 @@ vim.o.termguicolors = true
 -- Python 3
 vim.g.python3_host_prog = '/usr/local/bin/python3.11'
 
+-- Disable netrw
+vim.g.netrw_banner = 0
+
 -- Diagnostics
 vim.diagnostic.config {
     virtual_text = true,
