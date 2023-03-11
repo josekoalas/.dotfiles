@@ -1,7 +1,7 @@
 # Hotkey configurator for macOS
 
 # Open Terminal
-alt - t : ~/.config/skhd/launch_iterm.sh
+alt - c : ~/.config/skhd/launch_iterm.sh
 
 # Focus windows
 alt - h : yabai -m window --focus west || yabai -m display --focus west
