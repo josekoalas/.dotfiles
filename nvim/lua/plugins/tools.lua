@@ -37,16 +37,6 @@ return {
         event = 'InsertLeavePre'
 	},
 
-    -- Autosave sessions
-    {
-        'rmagatti/auto-session',
-        opts = {
-            log_level = 'error',
-            auto_session_suppress_dirs = { '~/', '~/Downloads', '/'}
-        },
-        event = 'BufWinEnter'
-    },
-
     -- Undotree (undo history)
 	{
         'mbbill/undotree',

@@ -22,22 +22,6 @@ return {
         event = 'VimEnter'
     },
 
-    -- Collaborative neovim 
-    {
-        'jbyuki/instant.nvim',
-        config = function()
-            vim.g.instant_username = 'koala'
-        end,
-        keys = {
-            { '<leader>iS', ':InstantStartServer 127.0.0.1 6969<CR>', desc = 'Start Sharing Server' },
-            { '<leader>is', ':InstantStartSingle 127.0.0.1 6969<CR>', desc = 'Start Sharing Session' },
-            { '<leader>iT', ':InstantStopServer<CR>', desc = 'Stop Sharing Server' },
-            { '<leader>it', ':InstantStop<CR>', desc = 'Stop Sharing Session' },
-            { '<leader>ic', ':InstantStatus<CR>', desc = 'Sharing Session Current Status' },
-        },
-        cmd = { 'InstantJoinSingle' }
-    },
-
     -- Vim games
     {
         'theprimeagen/vim-be-good',
